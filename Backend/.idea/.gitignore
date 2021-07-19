@@ -3,6 +3,12 @@
 /workspace.xml
 # Datasource local storage ignored files
 /../../../../:\PortalCrudApp\Backend\.idea/dataSources/
+/../../../../:\PortalCrudApp\Backend\.idea/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/libraries/Maven__antlr_antlr_2_7_7.xml
+/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml
+/libraries/*
+
+
