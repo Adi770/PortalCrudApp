@@ -7,24 +7,33 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.lepa.crudapp.dao.ResetTokenRepository;
 import pl.lepa.crudapp.dao.UserRepository;
+import pl.lepa.crudapp.exceptions.TokenExpiredException;
+import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExist;
 import pl.lepa.crudapp.model.DTO.UserDTO;
+import pl.lepa.crudapp.model.ResetToken;
 import pl.lepa.crudapp.model.Role;
 import pl.lepa.crudapp.model.User;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final ResetTokenRepository resetTokenRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ResetTokenRepository resetTokenRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.resetTokenRepository = resetTokenRepository;
     }
 
     public User currentUser() {
@@ -32,12 +41,10 @@ public class UserService {
     }
 
     public User currentUserToken() {
-
         return (User) SecurityContextHolder.getContext().getAuthentication();
-        //return ;
     }
 
-    public Role currentRole(Role role) {
+    public Role currentRole() {
         return currentUser().getRole();
     }
 
@@ -58,31 +65,53 @@ public class UserService {
 
     public User updateUser(UserDTO updateUser) {
 
-        User user = userRepository.findByUsername(currentUser().getUsername()).orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+        User user = userRepository.findByUsername(currentUser().getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
         user.setEmail(updateUser.getEmail());
         user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
+
         return userRepository.save(user);
 
     }
 
     public User updateUserByAdmin(UserDTO updateUser) {
-        userRepository.findById(updateUser.getId()).orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+        User user = userRepository.findById(updateUser.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
         modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-        User user = modelMapper.map(updateUser, User.class);
+        modelMapper.map(updateUser, user);
+
         return userRepository.save(user);
 
     }
 
-    public User setRole(Role role) {
-        User user = currentUser();
-        user.setRole(role);
-        return userRepository.save(user);
+    public String createResetToken(String email){
 
+        User user=userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Invalid email"));
+
+        ResetToken resetToken=new ResetToken();
+
+        String token= UUID.randomUUID().toString();
+        resetToken.setToken(token);
+        resetToken.setTimeToExpired(LocalDateTime.now().plusDays(1));
+        resetToken.setUser(user);
+
+        resetTokenRepository.save(resetToken);
+
+        return token;
     }
 
+    public User resetPassword(String token, String newPassword) {
+        ResetToken resetToken=resetTokenRepository.findByToken(token)
+                .orElseThrow(()-> new TokenNotFoundException("Token is Invalid"));
 
-    public void resetPassword() {
+        if(resetToken.getTimeToExpired().isAfter(LocalDateTime.now())){
+            throw new TokenExpiredException("Token expired");
+        }
+        User user=resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        resetTokenRepository.delete(resetToken);
 
+        return userRepository.save(user);
 
     }
 
