@@ -8,10 +8,14 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import pl.lepa.crudapp.configuration.jwt.JwtTokenUtil;
+import pl.lepa.crudapp.configuration.jwt.JwtBasicAutheticationFilter;
+import pl.lepa.crudapp.configuration.jwt.JwtUsernameAndPasswordFilter;
 import pl.lepa.crudapp.service.UserDetailsServiceImpl;
 
 
@@ -21,6 +25,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private JwtTokenUtil jwt;
 
     @Autowired
     public WebSecurity(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsServiceImpl) {
@@ -30,7 +35,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors();
+        http
+                .cors().and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilter(new JwtUsernameAndPasswordFilter(authenticationManager(), jwt))
+                .addFilterAfter(new JwtBasicAutheticationFilter(authenticationManager(), jwt),JwtUsernameAndPasswordFilter.class);
     }
 
     @Override

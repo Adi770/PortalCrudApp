@@ -18,7 +18,7 @@ public class ResetToken {
     private String token;
 
     @OneToOne
-    @Column(name = "USER_APPLICATION")
+    @JoinColumn(name = "USER_APPLICATION")
     private User user;
 
     @Column(name = "TIME_TO_EXPIRED")

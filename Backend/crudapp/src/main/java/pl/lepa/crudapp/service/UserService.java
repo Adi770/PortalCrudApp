@@ -11,18 +11,21 @@ import pl.lepa.crudapp.dao.ResetTokenRepository;
 import pl.lepa.crudapp.dao.UserRepository;
 import pl.lepa.crudapp.exceptions.TokenExpiredException;
 import pl.lepa.crudapp.exceptions.TokenNotFoundException;
-import pl.lepa.crudapp.exceptions.UserExist;
+import pl.lepa.crudapp.exceptions.UserExistException;
 import pl.lepa.crudapp.model.DTO.UserDTO;
 import pl.lepa.crudapp.model.ResetToken;
 import pl.lepa.crudapp.model.Role;
 import pl.lepa.crudapp.model.User;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
 
+    private static final String USER_DOESN_T_EXIST = "User doesn't exist";
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
@@ -37,7 +40,7 @@ public class UserService {
     }
 
     public User currentUser() {
-        return userRepository.findByEmail("asd").orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+        return userRepository.findByEmail("asd").orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
     }
 
     public User currentUserToken() {
@@ -48,9 +51,13 @@ public class UserService {
         return currentUser().getRole();
     }
 
+    public List<Role> roleList(){
+        return Arrays.asList(Role.values().clone());
+    }
+
     public User createUser(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent() || userRepository.findByEmail(user.getEmail()).isPresent())
-            throw new UserExist("User with that name or email exist");
+            throw new UserExistException("User with that name or email exist");
         user.setRole(Role.USER);
         return userRepository.save(user);
 
@@ -58,7 +65,7 @@ public class UserService {
 
     public User createUserByAdmin(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent() || userRepository.findByEmail(user.getEmail()).isPresent())
-            throw new UserExist("User with that name or email exist");
+            throw new UserExistException("User with that name or email exist");
         return userRepository.save(user);
 
     }
@@ -66,7 +73,7 @@ public class UserService {
     public User updateUser(UserDTO updateUser) {
 
         User user = userRepository.findByUsername(currentUser().getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
         user.setEmail(updateUser.getEmail());
         user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
 
@@ -76,7 +83,7 @@ public class UserService {
 
     public User updateUserByAdmin(UserDTO updateUser) {
         User user = userRepository.findById(updateUser.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist"));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
         modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
         modelMapper.map(updateUser, user);
 
