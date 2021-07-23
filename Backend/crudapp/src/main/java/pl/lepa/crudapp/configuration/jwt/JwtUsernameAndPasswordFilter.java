@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
-    private JwtTokenUtil jwt;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwt;
 
     @Autowired
     public JwtUsernameAndPasswordFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwt) {
@@ -27,7 +27,9 @@ public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthentication
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
+            ObjectMapper objectMapper=new ObjectMapper();
+
+            UsernameAndPasswordAuthenticationRequest authenticationRequest = objectMapper
                     .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -42,7 +44,10 @@ public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthentication
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
 
         String jwtToken=jwt.createToken(authResult);
         response.addHeader("Authorization","Bearer "+ jwtToken);

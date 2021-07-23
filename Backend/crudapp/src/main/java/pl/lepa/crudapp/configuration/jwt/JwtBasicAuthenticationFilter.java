@@ -1,5 +1,6 @@
 package pl.lepa.crudapp.configuration.jwt;
 
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +17,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-public class JwtBasicAutheticationFilter extends BasicAuthenticationFilter {
+public class JwtBasicAuthenticationFilter extends BasicAuthenticationFilter {
 
     private JwtTokenUtil jwt;
 
     @Autowired
-    public JwtBasicAutheticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwt) {
+    public JwtBasicAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwt) {
         super(authenticationManager);
         this.jwt = jwt;
     }
@@ -34,7 +35,7 @@ public class JwtBasicAutheticationFilter extends BasicAuthenticationFilter {
 
         String authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader.isEmpty() || !authorizationHeader.startsWith("Bearer ")) {
+        if (Strings.isNullOrEmpty(authorizationHeader)|| !authorizationHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }

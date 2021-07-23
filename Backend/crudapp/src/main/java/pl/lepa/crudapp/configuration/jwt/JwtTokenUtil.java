@@ -4,18 +4,19 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
+
+@Component
 public class JwtTokenUtil {
 
     private JwtConfig jwtConfig;
-    private final Key key = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
+    private SecretKey key;
 
     @Autowired
     public JwtTokenUtil(JwtConfig jwtConfig) {
@@ -39,16 +40,16 @@ public class JwtTokenUtil {
     public Jws<Claims> jwtClaims(String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-        } catch (JwtException e){
+        } catch (JwtException e) {
             throw new IllegalStateException(String.format("Incorrect token", token));
         }
     }
 
-    public String getJwtSubject(String token){
+    public String getJwtSubject(String token) {
         return jwtClaims(token).getBody().getSubject();
     }
 
-    public String getAuthority(String token){
+    public String getAuthority(String token) {
         return jwtClaims(token).getBody().get("authorities").toString();
     }
 

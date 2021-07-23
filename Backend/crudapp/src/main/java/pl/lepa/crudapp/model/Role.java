@@ -8,7 +8,7 @@ public enum Role implements GrantedAuthority {
     MODERATION("MODERATION"),
     USER("USER");
 
-    private String currentRole;
+    private final String currentRole;
 
     Role(String role) {
         this.currentRole = role;
