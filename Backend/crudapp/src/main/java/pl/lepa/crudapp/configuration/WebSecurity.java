@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,10 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import pl.lepa.crudapp.configuration.jwt.JwtBasicAuthenticationFilter;
-import pl.lepa.crudapp.configuration.jwt.JwtConfig;
+import pl.lepa.crudapp.configuration.jwt.JwtAuthorizationFilter;
 import pl.lepa.crudapp.configuration.jwt.JwtTokenUtil;
-import pl.lepa.crudapp.configuration.jwt.JwtUsernameAndPasswordFilter;
+import pl.lepa.crudapp.configuration.jwt.JwtUsernameAndPasswordAuthFilter;
+import pl.lepa.crudapp.model.Role;
 import pl.lepa.crudapp.service.UserDetailsServiceImpl;
 
 
@@ -49,32 +48,34 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.cors().and()
-                .authorizeRequests().antMatchers(SWAGGER_WHITELIST).permitAll()
+        http.cors();
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilter(authenticationFilter())
-//                .addFilter(jwtBasicAuthenticationFilter())
-        ;
+                .addFilter(customAuthFilter())
+                .addFilterBefore(jwtBasicAuthenticationFilter(), JwtUsernameAndPasswordAuthFilter.class);
+
+        http.authorizeRequests().antMatchers(SWAGGER_WHITELIST).permitAll()
+                .and().authorizeRequests().antMatchers("/login").permitAll()
+                .and().authorizeRequests().antMatchers("/api/v1/**").hasAnyRole(Role.ADMIN.getAuthority(), Role.USER.getAuthority());
 
     }
 
-    public JwtBasicAuthenticationFilter jwtBasicAuthenticationFilter() throws Exception {
-        return new JwtBasicAuthenticationFilter(authenticationManager(), jwtTokenUtil);
+    public JwtAuthorizationFilter jwtBasicAuthenticationFilter() throws Exception {
+        return new JwtAuthorizationFilter(jwtTokenUtil);
     }
 
-    public JwtUsernameAndPasswordFilter authenticationFilter() throws Exception {
-        return new JwtUsernameAndPasswordFilter(authenticationManager(), jwtTokenUtil);
+    public JwtUsernameAndPasswordAuthFilter customAuthFilter() throws Exception {
+        return new JwtUsernameAndPasswordAuthFilter(authenticationManager(), jwtTokenUtil);
     }
-
-//    public JwtTokenUtil jwtTokenUtil() {
-//        return new JwtTokenUtil(jwtConfig);
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+        auth.inMemoryAuthentication()
+                .withUser("admin")
+                .roles(String.valueOf(Role.ADMIN))
+                .password(passwordEncoder.encode("admin"));
     }
 
     public DaoAuthenticationProvider daoAuthenticationProvider() {

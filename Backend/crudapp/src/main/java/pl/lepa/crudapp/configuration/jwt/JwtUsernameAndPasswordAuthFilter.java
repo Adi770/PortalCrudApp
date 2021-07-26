@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwt;
 
     @Autowired
-    public JwtUsernameAndPasswordFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwt) {
+    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwt) {
         this.authenticationManager = authenticationManager;
         this.jwt = jwt;
     }
@@ -50,6 +50,7 @@ public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthentication
                                             Authentication authResult) throws IOException, ServletException {
 
         String jwtToken=jwt.createToken(authResult);
+
         response.addHeader("Authorization","Bearer "+ jwtToken);
     }
 }

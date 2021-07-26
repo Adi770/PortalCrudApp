@@ -37,6 +37,21 @@ public class UserService {
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.resetTokenRepository = resetTokenRepository;
+        createBasicUser();
+    }
+
+    public void createBasicUser() {
+
+        if (!userRepository.findByUsername("admin").isPresent()) {
+            User user = new User();
+
+            user.setUsername("admin");
+            user.setPassword(passwordEncoder.encode("admin"));
+            user.setRole(Role.ADMIN);
+            user.setEmail("admin@admin.pl");
+
+            userRepository.save(user);
+        }
     }
 
     public User currentUser() {
@@ -51,7 +66,7 @@ public class UserService {
         return currentUser().getRole();
     }
 
-    public List<Role> roleList(){
+    public List<Role> roleList() {
         return Arrays.asList(Role.values().clone());
     }
 
@@ -91,13 +106,13 @@ public class UserService {
 
     }
 
-    public String createResetToken(String email){
+    public String createResetToken(String email) {
 
-        User user=userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Invalid email"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
 
-        ResetToken resetToken=new ResetToken();
+        ResetToken resetToken = new ResetToken();
 
-        String token= UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
         resetToken.setToken(token);
         resetToken.setTimeToExpired(LocalDateTime.now().plusDays(1));
         resetToken.setUser(user);
@@ -108,13 +123,13 @@ public class UserService {
     }
 
     public User resetPassword(String token, String newPassword) {
-        ResetToken resetToken=resetTokenRepository.findByToken(token)
-                .orElseThrow(()-> new TokenNotFoundException("Token is Invalid"));
+        ResetToken resetToken = resetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new TokenNotFoundException("Token is Invalid"));
 
-        if(resetToken.getTimeToExpired().isAfter(LocalDateTime.now())){
+        if (resetToken.getTimeToExpired().isAfter(LocalDateTime.now())) {
             throw new TokenExpiredException("Token expired");
         }
-        User user=resetToken.getUser();
+        User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(newPassword));
         resetTokenRepository.delete(resetToken);
 

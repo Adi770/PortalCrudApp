@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.lepa.crudapp.model.DTO.UserDTO;
 import pl.lepa.crudapp.model.Role;
+import pl.lepa.crudapp.model.User;
 import pl.lepa.crudapp.service.UserService;
 
 import java.util.List;
@@ -36,6 +37,10 @@ public class UserManagementController {
 
     @PutMapping("/role")
     public void editRole(@RequestBody UserDTO userDTO) {
+
+
         userService.updateUser(userDTO);
     }
+
+
 }

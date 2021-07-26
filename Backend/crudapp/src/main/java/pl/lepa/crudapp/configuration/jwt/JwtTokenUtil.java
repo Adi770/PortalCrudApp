@@ -15,12 +15,13 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
 
-    private JwtConfig jwtConfig;
-    private SecretKey key;
+    private final JwtConfig jwtConfig;
+    private final SecretKey key;
 
     @Autowired
-    public JwtTokenUtil(JwtConfig jwtConfig) {
+    public JwtTokenUtil(JwtConfig jwtConfig, SecretKey key) {
         this.jwtConfig = jwtConfig;
+        this.key = key;
     }
 
     public String createToken(Authentication authentication) {
@@ -28,13 +29,14 @@ public class JwtTokenUtil {
         Date currentDate = new Date();
         Date expiredDate = new Date(currentDate.getTime() + jwtConfig.getExpirationTime());
 
-        return Jwts.builder()
+        String jwt=Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("authorities", authentication.getAuthorities())
+                .claim("authorities", authentication.getAuthorities().toString())
                 .setIssuedAt(currentDate)
                 .setExpiration(expiredDate)
                 .signWith(key)
                 .compact();
+        return jwt;
     }
 
     public Jws<Claims> jwtClaims(String token) {
