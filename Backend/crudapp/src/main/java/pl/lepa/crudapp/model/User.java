@@ -24,6 +24,12 @@ public class User implements Serializable {
     private Role role;
     @Column(name="CREATE_DATE")
     private Date createDate;
-
-
+    @Column(name="ACCOUNT_NON_EXPIRED")
+    public boolean isAccountNonExpired;
+    @Column(name="ACCOUNT_NON_LOCKED")
+    public boolean isAccountNonLocked;
+    @Column(name="CREDENTIALS_NON_EXPIRED")
+    public boolean isCredentialsNonExpired;
+    @Column(name="ENABLED")
+    public boolean isEnabled;
 }

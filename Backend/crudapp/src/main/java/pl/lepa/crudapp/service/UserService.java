@@ -41,7 +41,16 @@ public class UserService {
     }
 
     public void createBasicUser() {
+        if (!userRepository.findByUsername("user").isPresent()) {
+            User user = new User();
 
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user"));
+            user.setRole(Role.USER);
+            user.setEmail("user@user.pl");
+
+            userRepository.save(user);
+        }
         if (!userRepository.findByUsername("admin").isPresent()) {
             User user = new User();
 
@@ -52,14 +61,14 @@ public class UserService {
 
             userRepository.save(user);
         }
+
     }
 
     public User currentUser() {
-        return userRepository.findByUsername(currentUserToken()).orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
+        return userRepository.findByUsername(currentUsername()).orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
     }
 
-    public String currentUserToken() {
-
+    public String currentUsername() {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
@@ -95,6 +104,18 @@ public class UserService {
 
         return userRepository.save(user);
 
+    }
+
+    public void changePassword(String newPassword){
+        User user=currentUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public void changeEmail(String newEmail){
+        User user=currentUser();
+        user.setEmail(newEmail);
+        userRepository.save(user);
     }
 
     public User updateUserByAdmin(UserDTO updateUser) {
