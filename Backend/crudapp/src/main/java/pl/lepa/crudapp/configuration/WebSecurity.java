@@ -63,7 +63,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     }
 
-    public JwtAuthorizationFilter jwtBasicAuthenticationFilter() throws Exception {
+    public JwtAuthorizationFilter jwtBasicAuthenticationFilter()  {
         return new JwtAuthorizationFilter(jwtTokenUtil);
     }
 
@@ -74,10 +74,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .roles(String.valueOf(Role.ADMIN))
-                .password(passwordEncoder.encode("admin"));
     }
 
     public DaoAuthenticationProvider daoAuthenticationProvider() {

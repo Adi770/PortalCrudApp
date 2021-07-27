@@ -1,4 +1,4 @@
-package pl.lepa.crudapp.model.DTO;
+package pl.lepa.crudapp.model.dto;
 
 import lombok.Data;
 import pl.lepa.crudapp.model.Role;

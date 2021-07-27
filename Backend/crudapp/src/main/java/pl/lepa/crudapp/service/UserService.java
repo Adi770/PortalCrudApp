@@ -12,7 +12,7 @@ import pl.lepa.crudapp.dao.UserRepository;
 import pl.lepa.crudapp.exceptions.TokenExpiredException;
 import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
-import pl.lepa.crudapp.model.DTO.UserDTO;
+import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.model.ResetToken;
 import pl.lepa.crudapp.model.Role;
 import pl.lepa.crudapp.model.User;

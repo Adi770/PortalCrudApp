@@ -37,7 +37,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         try {
             String authorizationToken = authorizationHeader.replace("Bearer ", "");
 
-      //      jwt.jwtClaims(authorizationToken);
             String username = jwt.getJwtSubject(authorizationToken);
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = jwt.getAuthority(authorizationToken);
 

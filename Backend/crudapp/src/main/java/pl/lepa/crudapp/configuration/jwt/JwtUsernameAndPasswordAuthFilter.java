@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -36,10 +37,9 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()
             );
-            Authentication authenticate=authenticationManager.authenticate(authentication);
-            return authenticate;
+            return authenticationManager.authenticate(authentication);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UsernameNotFoundException("Problem with credentials");
         }
 
     }

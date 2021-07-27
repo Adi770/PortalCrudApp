@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import pl.lepa.crudapp.exceptions.IncorrectJWT;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class JwtTokenUtil {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         } catch (JwtException e) {
-            throw new IllegalStateException(String.format("Incorrect token", token));
+            throw new IncorrectJWT("Incorrect token: "+token);
         }
     }
 
@@ -60,9 +61,7 @@ public class JwtTokenUtil {
     public Set<SimpleGrantedAuthority> getAuthority(String token) {
 
         var authorities = (List<Map<String, String>>) jwtClaims(token).getBody().get("authorities");
-        Set<SimpleGrantedAuthority> authoritySet =
-                authorities.stream().map(a -> new SimpleGrantedAuthority(a.get("authority"))).collect(Collectors.toSet());
-        return authoritySet;
+        return authorities.stream().map(a -> new SimpleGrantedAuthority(a.get("authority"))).collect(Collectors.toSet());
     }
 
 
