@@ -4,12 +4,18 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -29,14 +35,14 @@ public class JwtTokenUtil {
         Date currentDate = new Date();
         Date expiredDate = new Date(currentDate.getTime() + jwtConfig.getExpirationTime());
 
-        String jwt=Jwts.builder()
+
+        return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("authorities", authentication.getAuthorities().toString())
+                .claim("authorities", authentication.getAuthorities())
                 .setIssuedAt(currentDate)
                 .setExpiration(expiredDate)
                 .signWith(key)
                 .compact();
-        return jwt;
     }
 
     public Jws<Claims> jwtClaims(String token) {
@@ -51,8 +57,12 @@ public class JwtTokenUtil {
         return jwtClaims(token).getBody().getSubject();
     }
 
-    public String getAuthority(String token) {
-        return jwtClaims(token).getBody().get("authorities").toString();
+    public Set<SimpleGrantedAuthority> getAuthority(String token) {
+
+        var authorities = (List<Map<String, String>>) jwtClaims(token).getBody().get("authorities");
+        Set<SimpleGrantedAuthority> authoritySet =
+                authorities.stream().map(a -> new SimpleGrantedAuthority(a.get("authority"))).collect(Collectors.toSet());
+        return authoritySet;
     }
 
 

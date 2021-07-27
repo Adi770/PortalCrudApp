@@ -56,8 +56,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtBasicAuthenticationFilter(), JwtUsernameAndPasswordAuthFilter.class);
 
         http.authorizeRequests().antMatchers(SWAGGER_WHITELIST).permitAll()
+                .and().authorizeRequests().antMatchers("/api/v1/AccountManagement/test").hasAnyRole(Role.ADMIN.name())
                 .and().authorizeRequests().antMatchers("/login").permitAll()
-                .and().authorizeRequests().antMatchers("/api/v1/**").hasAnyRole(Role.ADMIN.getAuthority(), Role.USER.getAuthority());
+                .and().authorizeRequests().antMatchers("/api/v1/**").permitAll()
+                ;
 
     }
 

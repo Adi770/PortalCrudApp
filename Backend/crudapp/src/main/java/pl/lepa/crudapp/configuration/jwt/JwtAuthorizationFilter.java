@@ -3,7 +3,6 @@ package pl.lepa.crudapp.configuration.jwt;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,25 +37,25 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         try {
             String authorizationToken = authorizationHeader.replace("Bearer ", "");
 
-            jwt.jwtClaims(authorizationToken);
+      //      jwt.jwtClaims(authorizationToken);
             String username = jwt.getJwtSubject(authorizationToken);
-            Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(jwt.getAuthority(authorizationToken)));
+            Set<SimpleGrantedAuthority> simpleGrantedAuthorities = jwt.getAuthority(authorizationToken);
 
 
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
                     simpleGrantedAuthorities
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            chain.doFilter(request, response);
+
         } catch (Exception exception) {
 
             log.error("Error with token {}", exception.getMessage());
-            response.setHeader("error",exception.getMessage());
+            response.setHeader("error", exception.getMessage());
             response.sendError(FORBIDDEN.value());
         }
+        chain.doFilter(request, response);
     }
 
 

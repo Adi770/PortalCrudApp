@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.lepa.crudapp.model.DTO.UserDTO;
 import pl.lepa.crudapp.model.Role;
-import pl.lepa.crudapp.model.User;
 import pl.lepa.crudapp.service.UserService;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/AccountManagement/")
 public class UserManagementController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserManagementController(UserService userService) {
@@ -22,6 +21,7 @@ public class UserManagementController {
 
     @GetMapping("/test")
     public String test(){
+        userService.currentUser();
         return "test";
     }
 
@@ -41,6 +41,7 @@ public class UserManagementController {
 
         userService.updateUser(userDTO);
     }
+
 
 
 }

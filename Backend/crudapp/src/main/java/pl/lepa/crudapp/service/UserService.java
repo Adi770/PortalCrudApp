@@ -55,11 +55,12 @@ public class UserService {
     }
 
     public User currentUser() {
-        return userRepository.findByEmail("asd").orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
+        return userRepository.findByUsername(currentUserToken()).orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
     }
 
-    public User currentUserToken() {
-        return (User) SecurityContextHolder.getContext().getAuthentication();
+    public String currentUserToken() {
+
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public Role currentRole() {
