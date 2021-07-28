@@ -7,16 +7,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lepa.crudapp.dao.ResetTokenRepository;
 import pl.lepa.crudapp.dao.UserRepository;
 import pl.lepa.crudapp.exceptions.TokenExpiredException;
 import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
+import pl.lepa.crudapp.model.RecoveryMessage;
 import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.model.ResetToken;
 import pl.lepa.crudapp.model.Role;
 import pl.lepa.crudapp.model.User;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +33,19 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final ResetTokenRepository resetTokenRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ResetTokenRepository resetTokenRepository) {
+    public UserService(UserRepository userRepository,
+                       ModelMapper modelMapper,
+                       PasswordEncoder passwordEncoder,
+                       ResetTokenRepository resetTokenRepository,
+                       EmailService emailService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.resetTokenRepository = resetTokenRepository;
+        this.emailService = emailService;
         createBasicUser();
     }
 
@@ -128,9 +137,10 @@ public class UserService {
 
     }
 
-    public String createResetToken(String email) {
+    @Transactional
+    public void createResetToken(RecoveryMessage message) {
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
+        User user = userRepository.findByEmail(message.getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
 
         ResetToken resetToken = new ResetToken();
 
@@ -141,21 +151,27 @@ public class UserService {
 
         resetTokenRepository.save(resetToken);
 
-        return token;
+
+        try {
+            emailService.sendJavaMail(message,resetToken.getToken());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
-    public User resetPassword(String token, String newPassword) {
+    @Transactional
+    public void resetPassword(String token, String newPassword) {
         ResetToken resetToken = resetTokenRepository.findByToken(token)
                 .orElseThrow(() -> new TokenNotFoundException("Token is Invalid"));
 
-        if (resetToken.getTimeToExpired().isAfter(LocalDateTime.now())) {
+        if (resetToken.getTimeToExpired().isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Token expired");
         }
         User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(newPassword));
         resetTokenRepository.delete(resetToken);
 
-        return userRepository.save(user);
+        userRepository.save(user);
 
     }
 

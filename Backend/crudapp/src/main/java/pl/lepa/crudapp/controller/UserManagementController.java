@@ -3,9 +3,12 @@ package pl.lepa.crudapp.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.lepa.crudapp.model.dto.UserDTO;
+import pl.lepa.crudapp.model.RecoveryMessage;
 import pl.lepa.crudapp.model.Role;
+import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.service.UserService;
 
 import java.util.List;
@@ -24,29 +27,36 @@ public class UserManagementController {
 
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
         userService.currentUser();
         return "test";
     }
 
-    @ApiOperation(value="This method return all role in application")
+    @ApiOperation(value = "This method return all role in application")
     @GetMapping("/AllRole")
     public List<Role> getAllRole() {
         return userService.roleList();
     }
 
-    @ApiOperation(value = "Return current role user")
+    @ApiOperation(value = "This method return current user role")
     @GetMapping("/role")
     public Role currentRole() {
         return userService.currentRole();
     }
 
-    @ApiOperation(value = "Change current role user")
-    @PutMapping("/role")
-    public void editRole(@RequestBody UserDTO userDTO) {
-        userService.updateUser(userDTO);
+    @ApiOperation(value = "This method sending password reset link")
+    @PostMapping("/password")
+    public ResponseEntity<String> resetPassword(@RequestBody RecoveryMessage recoveryMessage) {
+        userService.createResetToken(recoveryMessage);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "This method change password with reset token")
+    @PutMapping("/password")
+    public  ResponseEntity<String> changePassword(@RequestParam("token") String token, @RequestBody String password){
+        userService.resetPassword(token,password);
+        return  new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }
