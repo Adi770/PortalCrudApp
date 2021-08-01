@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lepa.crudapp.model.RecoveryMessage;
 import pl.lepa.crudapp.model.Role;
+import pl.lepa.crudapp.model.User;
 import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.service.UserService;
 
@@ -32,8 +33,28 @@ public class UserManagementController {
         return "test";
     }
 
+    @PostMapping("user/register")
+    public ResponseEntity<String> registerNewUser(@RequestBody UserDTO userDTO) {
+        userService.createUser(userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser() {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("admin/register")
+    public ResponseEntity<String> registerNewUserByAdmin(@RequestBody User user) {
+        userService.createUserByAdmin(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     @ApiOperation(value = "This method return all role in application")
-    @GetMapping("/AllRole")
+    @GetMapping("/roles")
     public List<Role> getAllRole() {
         return userService.roleList();
     }
@@ -53,9 +74,9 @@ public class UserManagementController {
 
     @ApiOperation(value = "This method change password with reset token")
     @PutMapping("/password")
-    public  ResponseEntity<String> changePassword(@RequestParam("token") String token, @RequestBody String password){
-        userService.resetPassword(token,password);
-        return  new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> changePassword(@RequestParam("token") String token, @RequestBody String password) {
+        userService.resetPassword(token, password);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

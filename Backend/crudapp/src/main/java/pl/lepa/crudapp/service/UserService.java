@@ -23,6 +23,7 @@ import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -89,18 +90,20 @@ public class UserService {
         return Arrays.asList(Role.values().clone());
     }
 
-    public User createUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent() || userRepository.findByEmail(user.getEmail()).isPresent())
+    public void createUser(UserDTO userDTO) {
+        Optional<User> user=userRepository.findByUsernameOrEmail(userDTO.getUsername(),userDTO.getEmail());
+        if (user.isPresent())
             throw new UserExistException("User with that name or email exist");
-        user.setRole(Role.USER);
-        return userRepository.save(user);
-
+        User newUser=modelMapper.map(userDTO,User.class);
+        newUser.setRole(Role.USER);
+        userRepository.save(newUser);
     }
 
-    public User createUserByAdmin(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent() || userRepository.findByEmail(user.getEmail()).isPresent())
+    public void createUserByAdmin(User newUser) {
+        Optional<User> user=userRepository.findByUsernameOrEmail(newUser.getUsername(),newUser.getEmail());
+        if (user.isPresent())
             throw new UserExistException("User with that name or email exist");
-        return userRepository.save(user);
+        userRepository.save(newUser);
 
     }
 
