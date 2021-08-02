@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.lepa.crudapp.dao.UserRepository;
-import pl.lepa.crudapp.model.User;
-import pl.lepa.crudapp.model.UserPrincipal;
+import pl.lepa.crudapp.model.user.User;
+import pl.lepa.crudapp.model.user.UserPrincipal;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

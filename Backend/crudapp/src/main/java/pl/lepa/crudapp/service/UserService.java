@@ -13,11 +13,11 @@ import pl.lepa.crudapp.dao.UserRepository;
 import pl.lepa.crudapp.exceptions.TokenExpiredException;
 import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
-import pl.lepa.crudapp.model.RecoveryMessage;
+import pl.lepa.crudapp.model.user.RecoveryMessage;
 import pl.lepa.crudapp.model.dto.UserDTO;
-import pl.lepa.crudapp.model.ResetToken;
-import pl.lepa.crudapp.model.Role;
-import pl.lepa.crudapp.model.User;
+import pl.lepa.crudapp.model.user.ResetToken;
+import pl.lepa.crudapp.model.user.Role;
+import pl.lepa.crudapp.model.user.User;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;

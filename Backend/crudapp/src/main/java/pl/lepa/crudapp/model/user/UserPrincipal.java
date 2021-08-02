@@ -1,10 +1,11 @@
-package pl.lepa.crudapp.model;
+package pl.lepa.crudapp.model.user;
 
 
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.lepa.crudapp.model.user.User;
 
 import java.util.Collection;
 import java.util.Collections;

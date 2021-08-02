@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.lepa.crudapp.model.RecoveryMessage;
-import pl.lepa.crudapp.model.Role;
-import pl.lepa.crudapp.model.User;
+import pl.lepa.crudapp.model.user.RecoveryMessage;
+import pl.lepa.crudapp.model.user.Role;
+import pl.lepa.crudapp.model.user.User;
 import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.service.UserService;
 

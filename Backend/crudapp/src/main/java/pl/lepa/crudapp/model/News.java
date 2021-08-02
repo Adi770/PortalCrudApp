@@ -1,15 +1,15 @@
 package pl.lepa.crudapp.model;
 
-import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
+import pl.lepa.crudapp.model.user.User;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
+@Entity
 public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,8 @@ public class News {
     @Column(name = "ARTICLE")
     private String article;
 
-    @Column(name = "AUTHOR")
+    @ManyToOne
+    @JoinColumn(name = "AUTHOR_ID")
     private User author;
 
     @Column(name = "CREATE_DATE")
@@ -31,8 +32,14 @@ public class News {
     @Column(name = "LAST_EDIT")
     private LocalDateTime lastEdit;
 
-    @Column(name = "COMMENTS")
+    @OneToMany(mappedBy = "news",cascade = CascadeType.ALL)
     private Set<Comment> commentSet;
+
+    @OneToMany
+    private Set<Image> imageSet;
+
+    @OneToMany(mappedBy = "news")
+    private Set<NewsRating> newsRatings;
 
 
 }

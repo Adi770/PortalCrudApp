@@ -2,21 +2,21 @@ package pl.lepa.crudapp.model;
 
 
 import lombok.Data;
+import pl.lepa.crudapp.model.user.User;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@Entity
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
     private Long id;
 
-    @Column(name = "AUTHOR")
+    @ManyToOne
+    @JoinColumn(name = "AUTHOR_ID")
     private User author;
 
     @Column(name = "COMMENT_TEXT")
@@ -27,6 +27,9 @@ public class Comment {
 
     @Column(name = "LAST_EDIT")
     private LocalDateTime lastEdit;
+
+    @ManyToOne
+    private News news;
 
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.lepa.crudapp.configuration.jwt.JwtAuthorizationFilter;
 import pl.lepa.crudapp.configuration.jwt.JwtTokenUtil;
 import pl.lepa.crudapp.configuration.jwt.JwtUsernameAndPasswordAuthFilter;
-import pl.lepa.crudapp.model.Role;
+import pl.lepa.crudapp.model.user.Role;
 import pl.lepa.crudapp.service.UserDetailsServiceImpl;
 
 

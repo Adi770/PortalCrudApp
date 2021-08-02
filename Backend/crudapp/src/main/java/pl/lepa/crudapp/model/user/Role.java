@@ -1,4 +1,4 @@
-package pl.lepa.crudapp.model;
+package pl.lepa.crudapp.model.user;
 
 
 import org.springframework.security.core.GrantedAuthority;
