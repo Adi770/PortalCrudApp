@@ -113,4 +113,8 @@ public class NewsService {
         return commentRepository.findAllByNews(news, pageable).toList();
     }
 
+    public Comment getComment(long id){
+        return commentRepository.findById(id).orElseThrow(CommentNotFound::new);
+    }
+
 }
