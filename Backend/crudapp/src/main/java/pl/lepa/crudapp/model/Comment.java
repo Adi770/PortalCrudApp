@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
+@Entity(name = "COMMENT")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "AUTHOR_ID")
+    @JoinColumn(name = "AUTHOR_FK")
     private User author;
 
     @Column(name = "COMMENT_TEXT")

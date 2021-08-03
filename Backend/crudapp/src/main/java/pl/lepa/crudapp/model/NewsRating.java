@@ -6,7 +6,7 @@ import pl.lepa.crudapp.model.user.User;
 import javax.persistence.*;
 
 @Data
-@Entity
+@Entity(name = "NEWS_RATING")
 public class NewsRating {
 
     @EmbeddedId
@@ -22,5 +22,6 @@ public class NewsRating {
     @JoinColumn(name = "NEWS_ID")
     private News news;
 
-    private int rate;
+    @Column(name = "RATE")
+    private Integer rate;
 }

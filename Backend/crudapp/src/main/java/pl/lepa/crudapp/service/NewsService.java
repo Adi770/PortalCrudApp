@@ -12,6 +12,7 @@ import pl.lepa.crudapp.exceptions.CommentNotFound;
 import pl.lepa.crudapp.exceptions.InvalidUser;
 import pl.lepa.crudapp.exceptions.NewsNotFound;
 import pl.lepa.crudapp.model.*;
+import pl.lepa.crudapp.model.dto.CommentDto;
 import pl.lepa.crudapp.model.dto.NewsDto;
 import pl.lepa.crudapp.model.user.Role;
 

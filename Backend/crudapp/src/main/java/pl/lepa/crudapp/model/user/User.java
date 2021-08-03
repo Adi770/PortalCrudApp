@@ -1,6 +1,8 @@
 package pl.lepa.crudapp.model.user;
 
 import lombok.Data;
+import pl.lepa.crudapp.model.Comment;
+import pl.lepa.crudapp.model.News;
 import pl.lepa.crudapp.model.NewsRating;
 
 import javax.persistence.*;
@@ -46,4 +48,10 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private Set<NewsRating> newsRating;
+
+    @OneToMany(mappedBy = "author")
+    private Set<Comment> commentSet;
+
+    @OneToMany(mappedBy = "author")
+    private Set<News> newsSet;
 }
