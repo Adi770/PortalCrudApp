@@ -1,5 +1,6 @@
 package pl.lepa.crudapp.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,11 @@ public class BeanConfig {
     }
 
     @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
     public Docket swaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
@@ -38,6 +44,7 @@ public class BeanConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     private ApiKey apiKey() {
         return new ApiKey("JWT", "Authorization", "header");
     }

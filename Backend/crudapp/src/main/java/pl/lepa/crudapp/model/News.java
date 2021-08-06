@@ -35,7 +35,7 @@ public class News {
     @OneToMany(mappedBy = "news")
     private Set<Comment> commentSet;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "IMAGE_ID")
     private Set<Image> imageSet;
 

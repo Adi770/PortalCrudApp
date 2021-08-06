@@ -1,6 +1,9 @@
 package pl.lepa.crudapp.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,19 +31,31 @@ public class NewsService {
     private final NewsRepository newsRepository;
     private final UserService userService;
     private final CommentRepository commentRepository;
+    private final ObjectMapper objectMapper;
 
-    public NewsService(UploadService uploadService, NewsRepository newsRepository, UserService userService, CommentRepository commentRepository) {
+    public NewsService(UploadService uploadService,
+                       NewsRepository newsRepository,
+                       UserService userService,
+                       CommentRepository commentRepository,
+                       ObjectMapper objectMapper) {
         this.uploadService = uploadService;
         this.newsRepository = newsRepository;
         this.userService = userService;
         this.commentRepository = commentRepository;
+        this.objectMapper = objectMapper;
     }
 
+    public void createNews(String newsStringDto, Set<MultipartFile> files)  {
 
-    public void createNews(NewsDto newsDto, Set<MultipartFile> files) {
+        NewsDto newsDto= new NewsDto();
+        try {
+            newsDto = objectMapper.readValue(newsStringDto, NewsDto.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         News news = new News();
 
-        news.setTitle(news.getTitle());
+        news.setTitle(newsDto.getTitle());
         news.setArticle(newsDto.getArticle());
         news.setAuthor(userService.currentUser());
 

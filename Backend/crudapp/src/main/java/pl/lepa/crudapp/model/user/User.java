@@ -1,5 +1,6 @@
 package pl.lepa.crudapp.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import pl.lepa.crudapp.model.Comment;
 import pl.lepa.crudapp.model.News;
@@ -47,11 +48,14 @@ public class User implements Serializable {
     private boolean isEnabled;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<NewsRating> newsRating;
 
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Comment> commentSet;
 
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<News> newsSet;
 }

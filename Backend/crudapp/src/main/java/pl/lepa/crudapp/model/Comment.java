@@ -1,6 +1,8 @@
 package pl.lepa.crudapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import pl.lepa.crudapp.model.user.User;
 
@@ -29,6 +31,7 @@ public class Comment {
     private LocalDateTime lastEdit;
 
     @ManyToOne
+    @JsonIgnore
     private News news;
 
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lepa.crudapp.model.dto.UserAdminDTO;
 import pl.lepa.crudapp.model.user.RecoveryMessage;
 import pl.lepa.crudapp.model.user.Role;
 import pl.lepa.crudapp.model.user.User;
@@ -26,13 +27,7 @@ public class UserManagementController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/test")
-    public String test() {
-        userService.currentUser();
-        return "test";
-    }
-
+    @ApiOperation(value = "This method register new user")
     @PostMapping("user/register")
     public ResponseEntity<String> registerNewUser(@RequestBody UserDTO userDTO) {
         userService.createUser(userDTO);
@@ -46,14 +41,15 @@ public class UserManagementController {
     }
 
 
+    @ApiOperation(value = "This method creates users with additonal options available only for Admin")
     @PostMapping("admin/register")
-    public ResponseEntity<String> registerNewUserByAdmin(@RequestBody User user) {
+    public ResponseEntity<String> registerNewUserByAdmin(@RequestBody UserAdminDTO user) {
         userService.createUserByAdmin(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @ApiOperation(value = "This method return all role in application")
+    @ApiOperation(value = "This method return all users role in application")
     @GetMapping("/roles")
     public List<Role> getAllRole() {
         return userService.roleList();

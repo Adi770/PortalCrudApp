@@ -13,6 +13,7 @@ import pl.lepa.crudapp.dao.UserRepository;
 import pl.lepa.crudapp.exceptions.TokenExpiredException;
 import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
+import pl.lepa.crudapp.model.dto.UserAdminDTO;
 import pl.lepa.crudapp.model.user.RecoveryMessage;
 import pl.lepa.crudapp.model.dto.UserDTO;
 import pl.lepa.crudapp.model.user.ResetToken;
@@ -91,24 +92,24 @@ public class UserService {
     }
 
     public void createUser(UserDTO userDTO) {
-        Optional<User> user=userRepository.findByUsernameOrEmail(userDTO.getUsername(),userDTO.getEmail());
+        Optional<User> user = userRepository.findByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail());
         if (user.isPresent())
             throw new UserExistException("User with that name or email exist");
-        User newUser=modelMapper.map(userDTO,User.class);
+        User newUser = modelMapper.map(userDTO, User.class);
         newUser.setRole(Role.USER);
         userRepository.save(newUser);
     }
 
-    public void createUserByAdmin(User newUser) {
-        Optional<User> user=userRepository.findByUsernameOrEmail(newUser.getUsername(),newUser.getEmail());
-        if (user.isPresent())
+    public void createUserByAdmin(UserAdminDTO newUser) {
+        Optional<User> userExist = userRepository.findByUsernameOrEmail(newUser.getUsername(), newUser.getEmail());
+        if (userExist.isPresent())
             throw new UserExistException("User with that name or email exist");
-        userRepository.save(newUser);
+        User user =modelMapper.map(newUser, User.class);
+        userRepository.save(user);
 
     }
 
     public User updateUser(UserDTO updateUser) {
-
         User user = userRepository.findByUsername(currentUser().getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
         user.setEmail(updateUser.getEmail());
@@ -118,14 +119,14 @@ public class UserService {
 
     }
 
-    public void changePassword(String newPassword){
-        User user=currentUser();
+    public void changePassword(String newPassword) {
+        User user = currentUser();
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
 
-    public void changeEmail(String newEmail){
-        User user=currentUser();
+    public void changeEmail(String newEmail) {
+        User user = currentUser();
         user.setEmail(newEmail);
         userRepository.save(user);
     }
@@ -143,7 +144,8 @@ public class UserService {
     @Transactional
     public void createResetToken(RecoveryMessage message) {
 
-        User user = userRepository.findByEmail(message.getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
+        User user = userRepository.findByEmail(message.getUserEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid email"));
 
         ResetToken resetToken = new ResetToken();
 
@@ -156,7 +158,7 @@ public class UserService {
 
 
         try {
-            emailService.sendJavaMail(message,resetToken.getToken());
+            emailService.sendJavaMail(message, resetToken.getToken());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
