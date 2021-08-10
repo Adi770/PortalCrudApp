@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity(name = "RESET_TOKEN")
 public class ResetToken {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TOKEN_ID")

@@ -4,6 +4,7 @@ package pl.lepa.crudapp.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,14 +20,16 @@ import pl.lepa.crudapp.model.Comment;
 import pl.lepa.crudapp.model.Image;
 import pl.lepa.crudapp.model.News;
 import pl.lepa.crudapp.model.dto.CommentDto;
+import pl.lepa.crudapp.model.dto.CommentResponseDTO;
 import pl.lepa.crudapp.model.dto.NewsDto;
+import pl.lepa.crudapp.model.dto.NewsResponseDTO;
 import pl.lepa.crudapp.model.user.Role;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -37,18 +40,21 @@ public class NewsService {
     private final UserService userService;
     private final CommentRepository commentRepository;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public NewsService(UploadService uploadService,
                        NewsRepository newsRepository,
                        UserService userService,
                        CommentRepository commentRepository,
-                       ObjectMapper objectMapper) {
+                       ObjectMapper objectMapper,
+                       ModelMapper modelMapper) {
         this.uploadService = uploadService;
         this.newsRepository = newsRepository;
         this.userService = userService;
         this.commentRepository = commentRepository;
         this.objectMapper = objectMapper;
+        this.modelMapper = modelMapper;
     }
 
     public void createNews(String newsStringDto, Set<MultipartFile> files) {
@@ -81,8 +87,6 @@ public class NewsService {
         log.info("Image Set");
         log.info(imageSet.toString());
         news.setImageSet(imageSet);
-        log.info("news");
-        log.info(news.toString());
         newsRepository.save(news);
     }
 
@@ -98,13 +102,15 @@ public class NewsService {
         newsRepository.save(news);
     }
 
-    public List<News> newsList(int page, int size) {
-
-        return newsRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "Id"))).toList();
+    public List<NewsResponseDTO> newsList(int page, int size) {
+        List<News> newsList = newsRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "Id"))).toList();
+        List<NewsResponseDTO> newsResponseDTOList = newsList.stream().map(news -> modelMapper.map(news, NewsResponseDTO.class)).collect(Collectors.toList());
+        return newsResponseDTOList;
     }
 
-    public News getNews(long id) {
-        return newsRepository.findById(id).orElseThrow(NewsNotFound::new);
+    public NewsResponseDTO getNews(long id) {
+        News news = newsRepository.findById(id).orElseThrow(NewsNotFound::new);
+        return modelMapper.map(news, NewsResponseDTO.class);
     }
 
     public void deleteNews(long id) {
@@ -134,14 +140,18 @@ public class NewsService {
 
     }
 
-    public List<Comment> commentList(long idNews, int page, int size) {
+    public List<CommentResponseDTO> commentList(long idNews, int page, int size) {
         News news = newsRepository.findById(idNews).orElseThrow(NewsNotFound::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "Id"));
-        return commentRepository.findAllByNews(news, pageable).toList();
+        List<Comment> commentList = commentRepository.findAllByNews_Id(idNews, pageable).toList();
+        List<CommentResponseDTO> commentResponseDTOList = commentList
+                .stream().map(comment -> modelMapper.map(comment, CommentResponseDTO.class)).collect(Collectors.toList());
+        return commentResponseDTOList;
     }
 
-    public Comment getComment(long id) {
-        return commentRepository.findById(id).orElseThrow(CommentNotFound::new);
+    public CommentResponseDTO getComment(long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(CommentNotFound::new);
+        return modelMapper.map(comment, CommentResponseDTO.class);
     }
 
 }

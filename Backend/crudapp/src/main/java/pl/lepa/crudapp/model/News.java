@@ -1,13 +1,12 @@
 package pl.lepa.crudapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import pl.lepa.crudapp.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,6 +22,7 @@ public class News {
 
     @Column(name = "ARTICLE")
     private String article;
+
 
     @ManyToOne
     @JoinColumn(name = "AUTHOR_FK")
@@ -43,5 +43,11 @@ public class News {
     @OneToMany(mappedBy = "news")
     private Set<NewsRating> newsRatings;
 
+    public Double getNewsRatings() {
+        return newsRatings.stream().mapToDouble(NewsRating::getRate).average().orElse(Double.NaN);
+    }
 
+    public void setNewsRatings(Set<NewsRating> newsRatings) {
+        this.newsRatings = newsRatings;
+    }
 }

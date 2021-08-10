@@ -12,4 +12,5 @@ import pl.lepa.crudapp.model.News;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
     Page<Comment> findAllByNews(News news, Pageable pageable);
+    Page<Comment> findAllByNews_Id(Long newsId,Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package pl.lepa.crudapp.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import pl.lepa.crudapp.model.Comment;
 import pl.lepa.crudapp.model.News;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 @Entity(name = "USER_APPLICATION")
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")

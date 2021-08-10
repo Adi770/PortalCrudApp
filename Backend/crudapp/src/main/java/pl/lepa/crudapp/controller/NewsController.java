@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.lepa.crudapp.model.News;
 import pl.lepa.crudapp.model.dto.NewsDto;
+import pl.lepa.crudapp.model.dto.NewsResponseDTO;
 import pl.lepa.crudapp.service.NewsService;
 
 import java.util.Arrays;
@@ -26,12 +27,12 @@ public class NewsController {
     }
 
     @GetMapping("/news/{id}")
-    public News getOneNews(@PathVariable("id") long id) {
+    public NewsResponseDTO getOneNews(@PathVariable("id") long id) {
         return newsService.getNews(id);
     }
 
     @GetMapping("/news")
-    public List<News> getSomeNews(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
+    public List<NewsResponseDTO> getSomeNews(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
         return newsService.newsList(page, size);
     }
 
