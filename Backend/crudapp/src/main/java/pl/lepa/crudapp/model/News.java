@@ -6,6 +6,8 @@ import pl.lepa.crudapp.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -32,11 +34,10 @@ public class News {
     @Column(name = "LAST_EDIT")
     private LocalDateTime lastEdit;
 
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<Comment> commentSet;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "IMAGE_ID")
     private Set<Image> imageSet;
 
     @OneToMany(mappedBy = "news")

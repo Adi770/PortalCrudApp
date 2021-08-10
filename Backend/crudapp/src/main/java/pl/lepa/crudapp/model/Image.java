@@ -1,6 +1,8 @@
 package pl.lepa.crudapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
 import javax.persistence.*;
 
 @Data
@@ -17,6 +19,7 @@ public class Image {
 
     @Column(name = "LINK")
     private String link;
+
 
 
 }

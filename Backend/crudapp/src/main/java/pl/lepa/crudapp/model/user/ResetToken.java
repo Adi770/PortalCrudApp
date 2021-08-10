@@ -1,7 +1,6 @@
 package pl.lepa.crudapp.model.user;
 
 import lombok.Data;
-import pl.lepa.crudapp.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

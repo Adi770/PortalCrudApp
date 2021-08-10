@@ -3,7 +3,8 @@ package pl.lepa.crudapp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,17 +15,21 @@ import pl.lepa.crudapp.dao.NewsRepository;
 import pl.lepa.crudapp.exceptions.CommentNotFound;
 import pl.lepa.crudapp.exceptions.InvalidUser;
 import pl.lepa.crudapp.exceptions.NewsNotFound;
-import pl.lepa.crudapp.model.*;
+import pl.lepa.crudapp.model.Comment;
+import pl.lepa.crudapp.model.Image;
+import pl.lepa.crudapp.model.News;
 import pl.lepa.crudapp.model.dto.CommentDto;
 import pl.lepa.crudapp.model.dto.NewsDto;
 import pl.lepa.crudapp.model.user.Role;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class NewsService {
 
     private final UploadService uploadService;
@@ -33,6 +38,7 @@ public class NewsService {
     private final CommentRepository commentRepository;
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public NewsService(UploadService uploadService,
                        NewsRepository newsRepository,
                        UserService userService,
@@ -45,9 +51,9 @@ public class NewsService {
         this.objectMapper = objectMapper;
     }
 
-    public void createNews(String newsStringDto, Set<MultipartFile> files)  {
+    public void createNews(String newsStringDto, Set<MultipartFile> files) {
 
-        NewsDto newsDto= new NewsDto();
+        NewsDto newsDto = new NewsDto();
         try {
             newsDto = objectMapper.readValue(newsStringDto, NewsDto.class);
         } catch (JsonProcessingException e) {
@@ -63,14 +69,20 @@ public class NewsService {
         news.setLastEdit(LocalDateTime.now());
 
         Set<Image> imageSet = new HashSet<>();
-        Image image = new Image();
+
 
         for (MultipartFile file : files) {
+            Image image = new Image();
             image.setAlt(file.getOriginalFilename());
             image.setLink(uploadService.uploadLocalFile(file));
             imageSet.add(image);
         }
+
+        log.info("Image Set");
+        log.info(imageSet.toString());
         news.setImageSet(imageSet);
+        log.info("news");
+        log.info(news.toString());
         newsRepository.save(news);
     }
 
@@ -128,7 +140,7 @@ public class NewsService {
         return commentRepository.findAllByNews(news, pageable).toList();
     }
 
-    public Comment getComment(long id){
+    public Comment getComment(long id) {
         return commentRepository.findById(id).orElseThrow(CommentNotFound::new);
     }
 

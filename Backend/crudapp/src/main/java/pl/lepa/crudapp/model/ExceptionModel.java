@@ -1,4 +1,4 @@
-package pl.lepa.crudapp.exceptions;
+package pl.lepa.crudapp.model;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

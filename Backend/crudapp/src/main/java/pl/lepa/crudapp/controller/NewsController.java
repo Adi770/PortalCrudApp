@@ -1,8 +1,6 @@
 package pl.lepa.crudapp.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.hibernate.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,6 @@ import pl.lepa.crudapp.service.NewsService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
