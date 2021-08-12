@@ -1,5 +1,6 @@
 package pl.lepa.crudapp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,36 +16,35 @@ public class CommentController {
 
     private final NewsService newsService;
 
+    @Autowired
     public CommentController(NewsService newsService) {
         this.newsService = newsService;
     }
 
 
-    @GetMapping("news/{idNews}/comment")
+    @GetMapping("news/{idNews}/comments")
     public List<CommentResponseDTO> getSomeComments(@PathVariable long idNews,
                                                     @RequestParam(name = "page") int page,
                                                     @RequestParam(name = "size") int size) {
         return newsService.commentList(idNews, page, size);
     }
 
-    @GetMapping("news/{idNews}/comment/{idCom}")
-    public CommentResponseDTO getOneComment(@PathVariable(name = "idCom") long idCom,
-                                            @PathVariable(name = "idNews") String idNews) {
+    @GetMapping("comments/{idCom}")
+    public CommentResponseDTO getOneComment(@PathVariable(name = "idCom") long idCom) {
         return newsService.getComment(idCom);
     }
 
-    @PutMapping("news/{idNews}/comment/{idCom}")
+    @PutMapping("comments/{idCom}")
     public ResponseEntity<String> editComment(@PathVariable(name = "idCom") long id,
-                                              @RequestBody CommentDto comDto,
-                                              @PathVariable(name = "idNews") String idNews) {
+                                              @RequestBody CommentDto comDto) {
 
         newsService.editComment(id, comDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("news/{idNews}/comment")
+    @PostMapping("news/{idNews}/comments")
     public ResponseEntity<String> createComment(@PathVariable(name = "idNews") long id,
-                                              @RequestBody CommentDto comDto) {
+                                                @RequestBody CommentDto comDto) {
 
         newsService.createComment(id, comDto);
         return new ResponseEntity<>(HttpStatus.OK);

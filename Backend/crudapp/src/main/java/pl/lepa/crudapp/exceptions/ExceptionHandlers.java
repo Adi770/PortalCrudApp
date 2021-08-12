@@ -3,6 +3,7 @@ package pl.lepa.crudapp.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.lepa.crudapp.model.ExceptionModel;
@@ -17,7 +18,11 @@ public class ExceptionHandlers {
         return getObjectResponseEntity(e,HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {CommentNotFound.class,NewsNotFound.class,TokenNotFoundException.class})
+    @ExceptionHandler(value = {
+            CommentNotFound.class,
+            NewsNotFound.class,
+            TokenNotFoundException.class,
+            UsernameNotFoundException.class})
     public ResponseEntity<Object> notFound(RuntimeException e){
         return getObjectResponseEntity(e,HttpStatus.NOT_FOUND);
     }
@@ -35,7 +40,9 @@ public class ExceptionHandlers {
 
     private ResponseEntity<Object> getObjectResponseEntity(RuntimeException e, HttpStatus httpStatus)
     {
-        ExceptionModel exception= new ExceptionModel(e.getMessage(),httpStatus, ZonedDateTime.now());
+
+        ExceptionModel exception= new ExceptionModel(e.getMessage(),httpStatus,ZonedDateTime.now());
         return new ResponseEntity<>(exception,httpStatus);
+
     }
 }

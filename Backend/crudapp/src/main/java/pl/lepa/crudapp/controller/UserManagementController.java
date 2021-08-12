@@ -67,10 +67,14 @@ public class UserManagementController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "This method change password with reset token")
+    @ApiOperation(value = "This method change password")
     @PutMapping("/password")
-    public ResponseEntity<String> changePassword(@RequestParam("token") String token, @RequestBody String password) {
-        userService.resetPassword(token, password);
+    public ResponseEntity<String> changePassword(@RequestParam(value = "token",required = false) String token, @RequestBody String password) {
+        if (token != null) {
+            userService.resetPassword(token, password);
+        } else {
+            userService.changePassword(password);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
