@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lepa.crudapp.model.dto.UserAdminDTO;
 import pl.lepa.crudapp.model.dto.UserDTO;
+import pl.lepa.crudapp.model.dto.UserUpdateDTO;
 import pl.lepa.crudapp.model.user.RecoveryMessage;
 import pl.lepa.crudapp.model.user.Role;
 import pl.lepa.crudapp.service.UserService;
@@ -15,7 +16,7 @@ import pl.lepa.crudapp.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/AccountManagement/")
+@RequestMapping("/api/v1/AccountManagement")
 @Api(tags = "User Management")
 public class UserManagementController {
 
@@ -75,6 +76,18 @@ public class UserManagementController {
         } else {
             userService.changePassword(password);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/email")
+    public ResponseEntity<String> updateUserData(UserUpdateDTO user){
+        userService.changeEmail(user.getEmail());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/admin")
+    public ResponseEntity<String> updateByAdmin(UserDTO user){
+        userService.updateUserByAdmin(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

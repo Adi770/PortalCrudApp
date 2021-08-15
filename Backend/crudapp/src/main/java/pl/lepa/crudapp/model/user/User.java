@@ -1,7 +1,6 @@
 package pl.lepa.crudapp.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import pl.lepa.crudapp.model.Comment;
 import pl.lepa.crudapp.model.News;

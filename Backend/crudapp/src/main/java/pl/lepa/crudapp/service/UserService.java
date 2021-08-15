@@ -15,6 +15,7 @@ import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
 import pl.lepa.crudapp.model.dto.UserAdminDTO;
 import pl.lepa.crudapp.model.dto.UserDTO;
+import pl.lepa.crudapp.model.dto.UserUpdateDTO;
 import pl.lepa.crudapp.model.user.RecoveryMessage;
 import pl.lepa.crudapp.model.user.ResetToken;
 import pl.lepa.crudapp.model.user.Role;
@@ -106,16 +107,6 @@ public class UserService {
             throw new UserExistException("User with that name or email exist");
         User user =modelMapper.map(newUser, User.class);
         userRepository.save(user);
-
-    }
-
-    public User updateUser(UserDTO updateUser) {
-        User user = userRepository.findByUsername(currentUser().getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(USER_DOESN_T_EXIST));
-        user.setEmail(updateUser.getEmail());
-        user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
-
-        return userRepository.save(user);
 
     }
 
