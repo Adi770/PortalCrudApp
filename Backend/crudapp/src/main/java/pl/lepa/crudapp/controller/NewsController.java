@@ -1,6 +1,7 @@
 package pl.lepa.crudapp.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import pl.lepa.crudapp.service.NewsService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +27,7 @@ public class NewsController {
     public NewsController(NewsService newsService) {
         this.newsService = newsService;
     }
+
 
     @GetMapping("/news/{id}")
     public NewsResponseDTO getOneNews(@PathVariable("id") long id) {
@@ -50,9 +53,9 @@ public class NewsController {
 
     @PostMapping(value = "/news", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createNews(@RequestPart("news") String newsDto,
-                                             @RequestPart("file") MultipartFile[] files) {
+                                             @RequestPart("file") Set<MultipartFile> files) {
 
-        newsService.createNews(newsDto, Arrays.stream(files).collect(Collectors.toSet()));
+        newsService.createNews(newsDto, files);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

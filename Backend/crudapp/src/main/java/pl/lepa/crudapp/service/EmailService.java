@@ -21,7 +21,6 @@ public class EmailService {
     }
 
     public void sendJavaMail(RecoveryMessage message,String token) throws MessagingException {
-        SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
 
         MimeMessage mimeMessage=javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
