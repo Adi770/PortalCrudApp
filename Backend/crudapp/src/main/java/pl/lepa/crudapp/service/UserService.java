@@ -3,6 +3,7 @@ package pl.lepa.crudapp.service;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +16,7 @@ import pl.lepa.crudapp.exceptions.TokenNotFoundException;
 import pl.lepa.crudapp.exceptions.UserExistException;
 import pl.lepa.crudapp.model.dto.UserAdminDTO;
 import pl.lepa.crudapp.model.dto.UserDTO;
-import pl.lepa.crudapp.model.dto.UserUpdateDTO;
-import pl.lepa.crudapp.model.user.RecoveryMessage;
-import pl.lepa.crudapp.model.user.ResetToken;
-import pl.lepa.crudapp.model.user.Role;
-import pl.lepa.crudapp.model.user.User;
+import pl.lepa.crudapp.model.user.*;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
@@ -81,7 +78,10 @@ public class UserService {
     }
 
     public String currentUsername() {
-        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user().getName().toString();
+    }
+    private Authentication user(){
+        return  SecurityContextHolder.getContext().getAuthentication();
     }
 
     public Role currentRole() {

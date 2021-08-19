@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.lepa.crudapp.model.dto.CommentDto;
+import pl.lepa.crudapp.model.dto.CommentDTO;
 import pl.lepa.crudapp.model.dto.CommentResponseDTO;
 import pl.lepa.crudapp.service.NewsService;
 
@@ -38,7 +38,7 @@ public class CommentController {
 
     @PutMapping("comments/{idCom}")
     public ResponseEntity<String> editComment(@PathVariable(name = "idCom") long id,
-                                              @RequestBody CommentDto comDto) {
+                                              @RequestBody CommentDTO comDto) {
 
         newsService.editComment(id, comDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -46,7 +46,7 @@ public class CommentController {
 
     @PostMapping("news/{idNews}/comments")
     public ResponseEntity<String> createComment(@PathVariable(name = "idNews") long id,
-                                                @RequestBody CommentDto comDto) {
+                                                @RequestBody CommentDTO comDto) {
 
         newsService.createComment(id, comDto);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -1,21 +1,17 @@
 package pl.lepa.crudapp.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.lepa.crudapp.model.News;
-import pl.lepa.crudapp.model.dto.NewsDto;
+import pl.lepa.crudapp.model.dto.NewsDTO;
 import pl.lepa.crudapp.model.dto.NewsResponseDTO;
 import pl.lepa.crudapp.service.NewsService;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -40,7 +36,7 @@ public class NewsController {
     }
 
     @PutMapping("/news/{id}")
-    public ResponseEntity<String> editNews(@PathVariable("id") long id, @RequestBody NewsDto newsDto) {
+    public ResponseEntity<String> editNews(@PathVariable("id") long id, @RequestBody NewsDTO newsDto) {
         newsService.editNews(id, newsDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

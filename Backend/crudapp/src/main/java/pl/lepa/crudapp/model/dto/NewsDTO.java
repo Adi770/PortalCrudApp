@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 @Data
-public class NewsDto {
+public class NewsDTO {
 
     private String title;
     private String article;

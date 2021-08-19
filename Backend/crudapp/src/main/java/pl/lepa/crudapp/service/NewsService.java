@@ -19,9 +19,9 @@ import pl.lepa.crudapp.exceptions.NewsNotFound;
 import pl.lepa.crudapp.model.Comment;
 import pl.lepa.crudapp.model.Image;
 import pl.lepa.crudapp.model.News;
-import pl.lepa.crudapp.model.dto.CommentDto;
+import pl.lepa.crudapp.model.dto.CommentDTO;
 import pl.lepa.crudapp.model.dto.CommentResponseDTO;
-import pl.lepa.crudapp.model.dto.NewsDto;
+import pl.lepa.crudapp.model.dto.NewsDTO;
 import pl.lepa.crudapp.model.dto.NewsResponseDTO;
 import pl.lepa.crudapp.model.user.Role;
 
@@ -58,11 +58,11 @@ public class NewsService {
     }
 
 
-    public void createNews(String newsStringDto, Set<MultipartFile> files) {
+    public News createNews(String newsStringDto, Set<MultipartFile> files) {
 
-        NewsDto newsDto = new NewsDto();
+        NewsDTO newsDto = new NewsDTO();
         try {
-            newsDto = objectMapper.readValue(newsStringDto, NewsDto.class);
+            newsDto = objectMapper.readValue(newsStringDto, NewsDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -88,12 +88,12 @@ public class NewsService {
         log.info("Image Set");
         log.info(imageSet.toString());
         news.setImageSet(imageSet);
-        newsRepository.save(news);
+        return newsRepository.save(news);
     }
 
-    public void editNews(long id, NewsDto newsDto) {
+    public void editNews(long id, NewsDTO newsDto) {
         News news = newsRepository.findById(id).orElseThrow(NewsNotFound::new);
-        if (userService.currentUser().getRole().equals(Role.ADMIN) || !userService.currentUser().getUsername().equals(news.getAuthor().getUsername())) {
+        if (!userService.currentUser().getRole().equals(Role.ADMIN) || !userService.currentUser().getUsername().equals(news.getAuthor().getUsername())) {
             throw new InvalidUser("Access denied");
         }
         news.setTitle(newsDto.getTitle());
@@ -118,7 +118,7 @@ public class NewsService {
         newsRepository.deleteById(id);
     }
 
-    public void createComment(long idNews, CommentDto commentDto) {
+    public void createComment(long idNews, CommentDTO commentDto) {
         News news = newsRepository.findById(idNews).orElseThrow(NewsNotFound::new);
 
         Comment comment = new Comment();
@@ -132,7 +132,7 @@ public class NewsService {
         commentRepository.save(comment);
     }
 
-    public void editComment(long idComment, CommentDto commentDto) {
+    public void editComment(long idComment, CommentDTO commentDto) {
         Comment comment = commentRepository.findById(idComment).orElseThrow(CommentNotFound::new);
         comment.setCommentText(commentDto.getCommentText());
         comment.setLastEdit(LocalDateTime.now());
