@@ -94,13 +94,16 @@ class NewsControllerTest {
         String json = objectMapper.writeValueAsString(newsDTO);
         InputStream inputStream = getClass().getResourceAsStream("/test/testImage.png");
 
-        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+        MockMultipartFile fileImage = new MockMultipartFile(
                 "file", "testimage.png", MediaType.IMAGE_PNG_VALUE, inputStream
         );
 
-        MockMultipartFile fileJson= new MockMultipartFile("news","json","application/json",json.getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile fileJson= new MockMultipartFile(
+                "news","json", String.valueOf(MediaType.APPLICATION_JSON),json.getBytes(StandardCharsets.UTF_8)
+        );
+
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.multipart(URL)
-                .file(mockMultipartFile)
+                .file(fileImage)
                 .file(fileJson))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andReturn();

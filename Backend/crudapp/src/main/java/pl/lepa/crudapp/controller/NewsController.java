@@ -10,8 +10,10 @@ import pl.lepa.crudapp.model.dto.NewsDTO;
 import pl.lepa.crudapp.model.dto.NewsResponseDTO;
 import pl.lepa.crudapp.service.NewsService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -49,9 +51,9 @@ public class NewsController {
 
     @PostMapping(value = "/news", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createNews(@RequestPart("news") String newsDto,
-                                             @RequestPart("file") Set<MultipartFile> files) {
+                                             @RequestPart("file") MultipartFile[] files) {
 
-        newsService.createNews(newsDto, files);
+        newsService.createNews(newsDto, Arrays.stream(files).collect(Collectors.toSet()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

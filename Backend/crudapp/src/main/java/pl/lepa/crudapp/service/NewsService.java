@@ -60,6 +60,8 @@ public class NewsService {
 
     public News createNews(String newsStringDto, Set<MultipartFile> files) {
 
+        log.info("JSON: "+ newsStringDto);
+        log.info(files.toString());
         NewsDTO newsDto = new NewsDTO();
         try {
             newsDto = objectMapper.readValue(newsStringDto, NewsDTO.class);
