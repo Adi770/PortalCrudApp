@@ -23,6 +23,13 @@ public class CommentController {
         this.newsService = newsService;
     }
 
+    @PostMapping("news/{idNews}/comments")
+    public ResponseEntity<String> createComment(@PathVariable(name = "idNews") long id,
+                                                @RequestBody CommentDTO comDto) {
+
+        newsService.createComment(id, comDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @GetMapping("news/{idNews}/comments")
     public List<CommentResponseDTO> getSomeComments(@PathVariable long idNews,
@@ -41,14 +48,6 @@ public class CommentController {
                                               @RequestBody CommentDTO comDto) {
 
         newsService.editComment(id, comDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("news/{idNews}/comments")
-    public ResponseEntity<String> createComment(@PathVariable(name = "idNews") long id,
-                                                @RequestBody CommentDTO comDto) {
-
-        newsService.createComment(id, comDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
