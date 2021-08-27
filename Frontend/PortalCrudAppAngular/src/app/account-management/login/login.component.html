@@ -1,3 +1,14 @@
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <h1>Logowanie</h1>
+        <div class="form-group">
+            <label for="emailInput">Nazwa użytkownika</label>
+            <input type="email" class="form-control" id="emailInput" placeholder="Enter email" formControlName="username" >
+        </div>
 
-    <button (click)="login()">Login Test</button>
-    <button (click)="role()">role Test</button>
+        <div class="form-group">
+            <label for="passwordInput">hasło</label>
+            <input type="password" class="form-control" id="passwordInput" placeholder="hasło" formControlName="password">
+        </div>
+
+        <button class="btn btn-primary" type="submit">Logowanie</button>
+    </form>

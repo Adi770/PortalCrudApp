@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +15,9 @@ import { RegisterComponent } from './register/register.component';
   declarations: [AccountManagementComponent, UserComponent, AdminComponent, ModeratorComponent, LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
-    AccountManagementRoutingModule
+    AccountManagementRoutingModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports:[
     AccountManagementComponent
