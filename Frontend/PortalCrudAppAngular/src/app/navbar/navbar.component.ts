@@ -18,8 +18,7 @@ export class NavbarComponent implements OnInit {
   openLoginDialog(){
     this.dialog.closeAll;
     this.dialog.open(LoginComponent,{
-      width:'250px',
-      height:'250px'
+      width:'250px'
     })
   }
 
