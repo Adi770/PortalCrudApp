@@ -1,10 +1,12 @@
 package pl.lepa.crudapp.configuration;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.net.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +22,8 @@ import pl.lepa.crudapp.configuration.jwt.JwtTokenUtil;
 import pl.lepa.crudapp.configuration.jwt.JwtUsernameAndPasswordAuthFilter;
 import pl.lepa.crudapp.model.user.Role;
 import pl.lepa.crudapp.service.UserDetailsServiceImpl;
+
+import java.util.Collections;
 
 
 @Configuration
@@ -50,10 +54,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(customAuthFilter())
-                .addFilterBefore(jwtBasicAuthenticationFilter(), JwtUsernameAndPasswordAuthFilter.class);
+                .addFilterBefore(jwtBasicAuthenticationFilter(), JwtUsernameAndPasswordAuthFilter.class)
+        ;
 
         http.authorizeRequests().antMatchers(SWAGGER_WHITELIST).permitAll()
                 .and().authorizeRequests().antMatchers("/api/v1/AccountManagement/test").hasAnyRole(Role.ADMIN.name())
@@ -87,9 +93,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ImmutableList.of("*"));
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(ImmutableList.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Collections.singletonList(HttpHeaders.AUTHORIZATION));
         configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
