@@ -1,19 +1,28 @@
-.content{
+.content {
     background: yellow;
     display: flex;
 }
 
-.left-panel{
+.left-panel {
     background: red;
     width: 20vw;
 }
-.right-panel{
+
+.right-panel {
     background: transparent;
     width: 80vw;
 }
 
-.footer{
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
+.footer {
+    background: grey;
+}
+
+body{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.main_content{
+    flex: 1;
 }
