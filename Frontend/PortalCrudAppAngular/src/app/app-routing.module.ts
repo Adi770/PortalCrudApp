@@ -8,7 +8,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: 'account-management', 
-  loadChildren: () => import('./account-management/account-management.module').then(m => m.AccountManagementModule) }
+  loadChildren: () => import('./account-management/account-management.module').then(m => m.AccountManagementModule) },
+  { path: 'news', loadChildren: () => import('./news/news.module').then(m => m.NewsModule) }
 
 
 ];

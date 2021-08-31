@@ -1,0 +1,19 @@
+.content{
+    background: yellow;
+    display: flex;
+}
+
+.left-panel{
+    background: red;
+    width: 20vw;
+}
+.right-panel{
+    background: transparent;
+    width: 80vw;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}

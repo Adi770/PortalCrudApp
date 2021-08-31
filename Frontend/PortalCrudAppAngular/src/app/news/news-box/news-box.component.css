@@ -1,0 +1,19 @@
+.news_box {
+    display: flex;
+    height: 100%;
+    width: 50%;
+    flex-direction: column;
+    align-content: center;
+}
+
+.container_box {
+    margin: 1em;
+    border: 10px solid red;
+    border-radius: 10px;
+    background: yellow;
+}
+
+.news_list{
+    display: flex;
+    justify-content: center;
+}
