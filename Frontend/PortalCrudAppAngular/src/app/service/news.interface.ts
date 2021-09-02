@@ -4,3 +4,6 @@ export interface NewsDTO {
     article: String
 }
 
+export interface CommentDTO {
+    commentText: String
+}
