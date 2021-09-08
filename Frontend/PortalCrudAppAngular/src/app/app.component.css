@@ -17,12 +17,13 @@
     background: grey;
 }
 
-body{
+body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
 }
 
-.main_content{
+.main_content {
     flex: 1;
+    background-color: rgb(26, 26, 26);
 }
