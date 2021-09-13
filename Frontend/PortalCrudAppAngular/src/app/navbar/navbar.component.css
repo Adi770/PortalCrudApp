@@ -1,0 +1,12 @@
+.navbar-custom {
+    background: rgb(59, 59, 59);
+}
+
+img {
+    border-radius: 100%;
+    width: 40px;
+}
+
+.logout{
+    filter: invert(90%);
+}
