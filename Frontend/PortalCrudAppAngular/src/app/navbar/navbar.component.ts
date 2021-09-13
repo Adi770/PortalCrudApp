@@ -18,14 +18,15 @@ export class NavbarComponent implements OnInit {
   openLoginDialog(){
     this.dialog.closeAll;
     this.dialog.open(LoginComponent,{
-      width:'250px'
+      width:'250px',
+    
     })
   }
 
   openRegisterDialog(){
     this.dialog.closeAll;
     this.dialog.open(RegisterComponent,{
-      width:'250px'
+      width:'250px',
     })
   }
 

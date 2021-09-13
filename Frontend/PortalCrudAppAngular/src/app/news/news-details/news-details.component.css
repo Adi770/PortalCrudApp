@@ -1,5 +1,7 @@
-.title, .main-content {
+.title, .main-content, .comments {
     color: white;
+    margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 .main-image {
@@ -10,4 +12,26 @@
 .container {
     display: flex;
     flex-direction: column;
+}
+
+.comments {}
+
+.comment-title {
+    color: white;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+.comment {
+    display: flex;
+    gap: 10px;
+    border-style: solid;
+    border-color: white;
+}
+
+.comment-text{
+    border-style: solid;
+    border-color: white;
 }

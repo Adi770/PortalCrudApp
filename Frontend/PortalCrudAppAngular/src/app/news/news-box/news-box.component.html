@@ -1,20 +1,22 @@
 <div class="news_list">
     <div class="news_box">
         <div class="container_box" *ngFor="let item of news">
-            <div class="author">
-                item.author {{item}}
-            </div>
-            <div class="image">
-                <img src="./assets/testImage/testImage.jpg" alt="testImage">
-                <div class="text">
-                    <div class="title">
-                        <h1>item.title</h1>
-                    </div>
-                    <div class="article">
-                        item.article
+            <a routerLink="{{item}}">
+                <div class="author">
+                    item.author {{item}}
+                </div>
+                <div class="image">
+                    <img src="./assets/testImage/testImage.jpg" alt="testImage">
+                    <div class="text">
+                        <div class="title">
+                            <h1>item.title</h1>
+                        </div>
+                        <div class="article">
+                            item.article
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
             <div class="button_box">
                 <div class="row buttons" *ngIf="role==flase">
                     <a class="col nav-link btn button_left " (click)="openEditDialog()">
