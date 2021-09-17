@@ -1,7 +1,8 @@
+import { AccountService } from './../service/account.service';
 import { RegisterComponent } from './../account-management/register/register.component';
 import { LoginComponent } from './../account-management/login/login.component';
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-navbar',
@@ -10,24 +11,40 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public dialog:MatDialog) { }
+  constructor(public dialog: MatDialog, private accountService: AccountService) {
+
+  }
 
   ngOnInit(): void {
   }
 
-  openLoginDialog(){
+  userIsLogin(): boolean {
+   let token=sessionStorage.getItem('token');
+    if ( token!= 'null' && token!=null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  openLoginDialog() {
     this.dialog.closeAll;
-    this.dialog.open(LoginComponent,{
-      width:'250px',
-    
+    this.dialog.open(LoginComponent, {
+      width: '250px',
+
     })
   }
 
-  openRegisterDialog(){
+  openRegisterDialog() {
     this.dialog.closeAll;
-    this.dialog.open(RegisterComponent,{
-      width:'250px',
+    this.dialog.open(RegisterComponent, {
+      width: '250px',
     })
+  }
+
+  logout() {
+    this.accountService.logout()
+
   }
 
 }

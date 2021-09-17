@@ -20,6 +20,7 @@ export class NewsBoxComponent implements OnInit {
   getSomeNews() {
     return
   }
+  role=true;
 
 
   openDeleteDialog() {

@@ -16,21 +16,27 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="#">Delete</a>
                 </li>
-
             </ul>
             <form class="d-flex">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="userIsLogin(); else notLogin">
+                    <li class="nav-item">
+                        <a class="nav-link logout" (click)="logout()">
+                            <img src="./assets/icon/logout.png" alt="loginIcon">
+                        </a>
+                    </li>
+                </ul>
+                <ng-template #notLogin class="navbar-nav me-auto mb-2 mb-lg-0" >
                     <li class="nav-item">
                         <a class="nav-link login" (click)="openLoginDialog()">
-                            <img src="./assets/icon/login2.png" alt="loginIcon" >
+                            <img src="./assets/icon/login2.png" alt="loginIcon">
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link logout" (click)="openRegisterDialog()">
-                            <img src="./assets/icon/logout.png" alt="loginIcon" >
+                            <img src="./assets/icon/logout.png" alt="loginIcon">
                         </a>
                     </li>
-                </ul>
+                </ng-template>
             </form>
         </div>
     </div>

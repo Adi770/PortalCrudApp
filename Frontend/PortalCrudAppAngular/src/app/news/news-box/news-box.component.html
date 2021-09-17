@@ -18,7 +18,7 @@
                 </div>
             </a>
             <div class="button_box">
-                <div class="row buttons" *ngIf="role==flase">
+                <div class="row buttons" *ngIf="role==true">
                     <a class="col nav-link btn button_left " (click)="openEditDialog()">
                         <img src="" alt="loginIcon" width="40">
                     </a>
@@ -28,8 +28,16 @@
                 </div>
 
             </div>
+            <div>
             <div class="comments">
-                <input type="text" class="form-control">
+                <div class="row">
+                    <div class="col-1">
+                        <img class="user_image"src="./assets/icon/login2.png" alt="user_image" width="40px">
+                    </div>
+                    <div class="col-11">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

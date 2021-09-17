@@ -12,11 +12,9 @@
     justify-content: center;
 }
 
-.container_box {
-    margin: 1em;
-}
 
 .container_box {
+    margin: 1em;
     background: rgb(59, 59, 59);
     border-radius: 10px;
 }
@@ -76,4 +74,8 @@
 
 .comments {
     margin: 12px;
+}
+
+.user_image{
+    border-radius: 100%;
 }

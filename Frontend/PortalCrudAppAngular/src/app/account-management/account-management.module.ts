@@ -9,6 +9,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ModeratorComponent } from './moderator/moderator.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { RegisterComponent } from './register/register.component';
     CommonModule,
     AccountManagementRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule
   ],
   exports:[
     AccountManagementComponent

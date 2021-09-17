@@ -13,7 +13,7 @@ export class AccountService {
   baseUrl = environment.baseAddress;
   basicApiUrl = environment.baseApiUrl;
   accountManagementUrl = this.basicApiUrl + '/AccountManagement';
-  defualtValue='none';
+  defualtValue=null;
 
 
   getToken(user: UsernameAndPassword) {

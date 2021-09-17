@@ -8,10 +8,11 @@ import { EditComponent } from './edit/edit.component';
 import { AddComponent } from './add/add.component';
 import { DeleteComponent } from './delete/delete.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
+import { CommentsComponent } from './comments/comments.component';
 
 
 @NgModule({
-  declarations: [NewsComponent, NewsBoxComponent, EditComponent, AddComponent, DeleteComponent, NewsDetailsComponent],
+  declarations: [NewsComponent, NewsBoxComponent, EditComponent, AddComponent, DeleteComponent, NewsDetailsComponent, CommentsComponent],
   imports: [
     CommonModule,
     NewsRoutingModule
