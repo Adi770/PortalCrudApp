@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,13 +10,20 @@ import { AddComponent } from './add/add.component';
 import { DeleteComponent } from './delete/delete.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
 import { CommentsComponent } from './comments/comments.component';
+import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
-  declarations: [NewsComponent, NewsBoxComponent, EditComponent, AddComponent, DeleteComponent, NewsDetailsComponent, CommentsComponent],
+  declarations: [
+    NewsComponent, NewsBoxComponent, EditComponent,
+    AddComponent, DeleteComponent, NewsDetailsComponent, 
+    CommentsComponent],
   imports: [
     CommonModule,
-    NewsRoutingModule
+    NewsRoutingModule,
+    CKEditorModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class NewsModule { }
