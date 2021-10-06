@@ -17,10 +17,10 @@ public class News {
     @Column(name = "NEWS_ID")
     private Long id;
 
-    @Column(name = "TITLE")
+    @Column(name = "TITLE",columnDefinition = "TEXT")
     private String title;
 
-    @Column(name = "ARTICLE")
+    @Column(name = "ARTICLE",columnDefinition = "TEXT")
     private String article;
 
 
@@ -34,13 +34,13 @@ public class News {
     @Column(name = "LAST_EDIT")
     private LocalDateTime lastEdit;
 
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Comment> commentSet;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Image> imageSet;
 
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news",fetch = FetchType.EAGER)
     private Set<NewsRating> newsRatings;
 
     public Double getNewsRatings() {
