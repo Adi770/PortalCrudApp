@@ -1,3 +1,6 @@
+import { environment } from './../../../environments/environment';
+import { Observable } from 'rxjs';
+import { NewsResponseDTO } from './../../service/news.interface';
 import { EditComponent } from './../edit/edit.component';
 import { DeleteComponent } from './../delete/delete.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,28 +16,38 @@ export class NewsBoxComponent implements OnInit {
 
   constructor(private newsService: NewsService, private dialog: MatDialog) { }
 
+  news: any;
+  baseUrl: string;
+
   ngOnInit(): void {
+    this.baseUrl=environment.baseAddress;
+    this.loadNews().subscribe(res => {
+      this.news = res;
+      console.log(res)
+    });
+  }
+  role = true;
+
+  loadNews(): Observable<Array<NewsResponseDTO>> {
+    console.log('load news')
+    return this.newsService.getSomeNews(0, 5);
   }
 
-  news = [1, 2, 3, 4, 5, 6, 7, 0];
-  getSomeNews() {
-    return
-  }
-  role=true;
-
-
-  openDeleteDialog() {
+  openDeleteDialog(idNews: string) {
     this.dialog.closeAll;
     this.dialog.open(DeleteComponent, {
-      width: '250px'
-    })
+      width: '250px',
+      data: { id: idNews }
+    });
+
   }
-  openEditDialog() {
-    this.dialog.closeAll;
-    this.dialog.open(EditComponent, {
-      width: '250px'
-    })
+
+
+  openDeleteDialo2(idNews: string) {
+    console.log(idNews)
   }
+
+
 
 
 }

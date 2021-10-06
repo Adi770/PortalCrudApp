@@ -8,7 +8,7 @@
     justify-content: center;
 }
 
-.form-group {
+.form-group, .custom-file {
     padding-bottom: 10px;
 }
 
@@ -24,3 +24,8 @@ label {
     border-radius: 10px;
     padding: 1em;
 }
+:host ckeditor ::ng-deep .ck-editor__editable {
+    height: 50vh;
+}
+
+.form-label {}

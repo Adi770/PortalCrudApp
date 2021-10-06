@@ -1,11 +1,11 @@
 <div class="contianer">
     <form (ngSubmit)="deleteNews()">
-        <div class="form-group">
-            <label for="">Czy chcesz usunąć dany news</label>
+        <div class="">
+            <label>Czy chcesz usunąć dany news?</label>
         </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit">Tak</button>
-            <button class="btn btn-primary"  >Nie</button>
+        <div class="buttons">
+            <button class="btn btn-primary" mat-icon-button mat-dialog-close type="submit">Tak</button>
+            <button class="btn btn-primary" mat-icon-button mat-dialog-close>Nie</button>
         </div>
     </form>
 </div>

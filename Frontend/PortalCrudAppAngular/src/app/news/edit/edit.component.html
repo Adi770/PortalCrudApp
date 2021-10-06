@@ -1,3 +1,13 @@
 <div class="container">
-    
+    <form [formGroup]="idForm" (ngSubmit)="edit()">
+        <div class="form-group">
+            <label for="idNews">Podaj id news:</label>
+            <input class="form-control" id="idNews" formControlName="idNews">
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary" type="submit">Edytuj</button>
+            <button class="btn btn-primary" mat-icon-button mat-dialog-close type="reset">Zamknij</button>
+        </div>
+    </form>
+
 </div>

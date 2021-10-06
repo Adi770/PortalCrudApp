@@ -13,12 +13,12 @@
       </label>
     </div>
     <div>
-      <input type="file" class="form-control" id="customFile" (change)="onFileSelected($event)" multiple>
+      <input type="file" class="form-control" id="customFile" (change)="onFileSelected($event)"  multiple>
     </div>
   </div>
   <form [formGroup]="articleFormGroup" (ngSubmit)="save()">
     <div class="form-group">
-      <label for="article-title">Tytył</label>
+      <label for="article-title">Tytuł</label>
       <div>
         <input class="form-control" id="article-title" rows="1" formControlName="title">
       </div>

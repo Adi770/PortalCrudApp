@@ -23,9 +23,9 @@ export class AddComponent implements OnInit {
   edtiorData: string;
   articleTitle: string;
 
-  articleFormGroup=this.formBuilder.group({
-    title:'',
-    article:''
+  articleFormGroup = this.formBuilder.group({
+    title: '',
+    article: ''
   })
 
   public config = {
@@ -37,41 +37,54 @@ export class AddComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    for (var i = 0; i < event.target.files.length; i++) {
+    //for (var i = 0; i < event.target.files.length; i++)
+    let list = new DataTransfer();
+    let maxAmountImage: number;
+    if (event.target.files.length < 5) {
+      maxAmountImage = event.target.files.length
+    }
+    else {
+      maxAmountImage = 5;
+    }
+    for (var i = 0; i < maxAmountImage; i++) {
       let reader = new FileReader();
-      this.imageList = event.target.files[i];
+      list.items.add(event.target.files[i])
       this.previewsImageList = [];
       reader.onload = (e: any) => {
         console.log("reader ")
         this.previewsImageList.push(e.target.result)
       }
       reader.readAsDataURL(event.target.files[i]);
-      this.uploadImage(event.target.files[i])
     }
+    this.imageList = list.files;
   }
 
-  uploadImage(file: File) {
-    if (file) {
 
-    }
 
-  }
+  uploadFile(news: NewsDTO) {
 
-  uploadFile(news: NewsDTO, image) {
+    console.log('upload file')
     const data = new FormData();
     for (var i = 0; i < this.imageList.length; i++) {
-      data.append('file', this.imageList.item[i])
+      data.append('file', this.imageList[i])
     }
 
+    console.log(data.get('file'))
     data.append('news', JSON.stringify(news));
-
+    console.log(data.getAll)
     this.newsService.createNews(data);
   }
 
-  save(){
-    console.log("test "+this.articleFormGroup.get(['title']).value)
+  save() {
+    console.log("test " + this.articleFormGroup.get(['title']).value)
     console.log(this.articleFormGroup.get(['article']).value)
+    //let news: NewsDTO;
+    const news: NewsDTO = {
+      title: this.articleFormGroup.get(['title']).value,
+      article: this.articleFormGroup.get(['article']).value
+    }
 
+    this.uploadFile(news)
   }
 
 }

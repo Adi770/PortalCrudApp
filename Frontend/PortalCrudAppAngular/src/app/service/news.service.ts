@@ -1,4 +1,4 @@
-import { NewsDTO } from './news.interface';
+import { NewsDTO, NewsResponseDTO } from './news.interface';
 import { environment } from './../../environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -14,27 +14,33 @@ export class NewsService {
 
   baseUrl = environment.baseApiUrl + '/news'
 
-  getNewsById(id: number): Observable<NewsDTO> {
-    return this.http.get<NewsDTO>(this.baseUrl + '/' + id);
+  getNewsById(id: number): Observable<NewsResponseDTO> {
+    return this.http.get<NewsResponseDTO>(this.baseUrl + '/' + id);
   }
 
-  getSomeNews(page: number, size: number): Observable<Array<NewsDTO>> {
+  getSomeNews(page: number, size: number): Observable<Array<NewsResponseDTO>> {
     let params = new HttpParams();
-    params.set('page', page.toString());
-    params.set('size', size.toString());
-    return this.http.get<Array<NewsDTO>>(this.baseUrl, { params })
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+    return this.http.get<Array<NewsResponseDTO>>(this.baseUrl, {params: params})
   }
 
   updateNews(id: number, newsDTO: NewsDTO) {
-    this.http.put(this.baseUrl + '/id', newsDTO)
+    this.http.put(this.baseUrl + '/' + id, newsDTO).subscribe(res => {
+      console.log('update news ' + id)
+    })
   }
 
   deleteNews(id: number) {
-    this.http.delete(this.baseUrl + '/id')
+    this.http.delete(this.baseUrl + '/' + id).subscribe(res => {
+      console.log('delete news ' + id)
+    })
   }
 
   createNews(news: Data) {
-    this.http.post(this.baseUrl, news)
-
+    console.log(this.baseUrl + ' ++++++++++++ ' + news)
+    this.http.post(this.baseUrl, news).subscribe(res => {
+      console.log('poszedl')
+    })
   }
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { NewsService } from './../../service/news.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-delete',
@@ -7,14 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeleteComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private newsService:NewsService
+  ) { }
 
   ngOnInit(): void {
   }
 
   deleteNews(){
-
-    
+    this.newsService.deleteNews(this.data.id);
   }
 
 }

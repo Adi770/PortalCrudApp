@@ -1,44 +1,44 @@
 <div class="news_list">
     <div class="news_box">
         <div class="container_box" *ngFor="let item of news">
-            <a routerLink="{{item}}">
+            <a routerLink="{{item?.id}}">
                 <div class="author">
-                    item.author {{item}}
+                    {{item.author.username}}
                 </div>
                 <div class="image">
-                    <img src="./assets/testImage/testImage.jpg" alt="testImage">
+                    <img src="{{baseUrl+'/'+item.imageSet[0].link}}" alt="{{item.imageSet[0].alt}}">
                     <div class="text">
                         <div class="title">
-                            <h1>item.title</h1>
+                            <h1>{{item.title}}</h1>
                         </div>
                         <div class="article">
-                            item.article
+                            <p class="overflowText" [innerHTML]="item?.article"></p>
                         </div>
                     </div>
                 </div>
             </a>
             <div class="button_box">
                 <div class="row buttons" *ngIf="role==true">
-                    <a class="col nav-link btn button_left " (click)="openEditDialog()">
-                        <img src="" alt="loginIcon" width="40">
+                    <a class="col nav-link btn button_left " routerLink="edit/{{item.id}}">
+                        <img src="" alt="loginIconEdit" width="40">
                     </a>
-                    <a class="col nav-link btn button_right" (click)="openDeleteDialog()">
-                        <img src="" alt="loginIcon" width="40">
+                    <a class="col nav-link btn button_right" (click)="openDeleteDialog(item.id)">
+                        <img src="" alt="loginIconDelete" width="40">
                     </a>
                 </div>
 
             </div>
             <div>
-            <div class="comments">
-                <div class="row">
-                    <div class="col-1">
-                        <img class="user_image"src="./assets/icon/login2.png" alt="user_image" width="40px">
-                    </div>
-                    <div class="col-11">
-                        <input type="text" class="form-control">
+                <div class="comments">
+                    <div class="row">
+                        <div class="col-1">
+                            <img class="user_image" src="./assets/icon/login2.png" alt="user_image" width="40px">
+                        </div>
+                        <div class="col-11">
+                            <input type="text" class="form-control">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

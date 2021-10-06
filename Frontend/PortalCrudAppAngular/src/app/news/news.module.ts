@@ -11,6 +11,7 @@ import { DeleteComponent } from './delete/delete.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
 import { CommentsComponent } from './comments/comments.component';
 import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { CKEditorComponent, CKEditorModule } from '@ckeditor/ckeditor5-angular';
     NewsRoutingModule,
     CKEditorModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ]
 })
 export class NewsModule { }

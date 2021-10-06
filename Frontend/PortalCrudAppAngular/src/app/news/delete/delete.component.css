@@ -1,3 +1,13 @@
-.container{
+.container {
     background: grey;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
