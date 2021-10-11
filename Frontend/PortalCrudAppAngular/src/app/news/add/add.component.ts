@@ -4,9 +4,9 @@ import { NewsService } from './../../service/news.service';
 import { Component, OnInit } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Title } from '@angular/platform-browser';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -18,7 +18,10 @@ export class AddComponent implements OnInit {
   constructor(
     private newsService: NewsService,
     private formBuilder: FormBuilder,
-    private router: Router) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+
+  }
 
   imageList: FileList;
   previewsImageList: string[];
@@ -28,6 +31,8 @@ export class AddComponent implements OnInit {
   testImageList: string;
   edtiorData: string;
   articleTitle: string;
+  idNews: number;
+  currentPath: string;
 
   articleFormGroup = this.formBuilder.group({
     title: '',
@@ -40,9 +45,33 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.edtiorData = '';
+    const snap = this.activatedRoute.snapshot
+    this.idNews = snap.params.newsId;
+    this.currentPath = snap.routeConfig.path
+
+    this.loadEditData()
+
   }
 
   loadEditData() {
+    if (this.idNews) {
+      //load news by id
+      this.newsService.getNewsById(this.idNews)
+        .subscribe(
+          res => {
+            this.articleFormGroup.setValue({
+              title: res.title,
+              article: res.article
+            })
+          },
+          err => console.log(err),
+          () => ('load news ' + this.idNews)
+        )
+    } else if (this.currentPath === 'create') {
+      this.router.navigate(['/news/create'])
+    } else {
+      this.router.navigate(['/news'])
+    }
 
   }
 
@@ -70,16 +99,32 @@ export class AddComponent implements OnInit {
   }
 
 
-
-  uploadFile(news: NewsDTO) {
-
-    console.log('upload file')
-    const data = new FormData();
-    for (var i = 0; i < this.imageList.length; i++) {
-      data.append('file', this.imageList[i])
+  save() {
+    console.log(this.articleFormGroup.get(['title']).value)
+    console.log(this.articleFormGroup.get(['article']).value)
+    //let news: NewsDTO;
+    const news: NewsDTO = {
+      title: this.articleFormGroup.get(['title']).value,
+      article: this.articleFormGroup.get(['article']).value
     }
 
-    console.log(data.get('file'))
+    this.createRequest(news)
+  }
+
+  createRequest(news: NewsDTO) {
+    if (this.idNews) {
+      this.editNewsRequest(news);
+
+    } else {
+      this.addNewsRequest(news);
+    }
+  }
+
+  private addNewsRequest(news: NewsDTO) {
+    const data = new FormData();
+    for (var i = 0; i < this.imageList.length; i++) {
+      data.append('file', this.imageList[i]);
+    }
     data.append('news', JSON.stringify(news));
     this.newsService.createNews(data)
       .subscribe(
@@ -88,16 +133,13 @@ export class AddComponent implements OnInit {
         () => this.router.navigate(['/news'])
       );
   }
-  save() {
-    console.log("test " + this.articleFormGroup.get(['title']).value)
-    console.log(this.articleFormGroup.get(['article']).value)
-    //let news: NewsDTO;
-    const news: NewsDTO = {
-      title: this.articleFormGroup.get(['title']).value,
-      article: this.articleFormGroup.get(['article']).value
-    }
 
-    this.uploadFile(news)
+  private editNewsRequest(news: NewsDTO) {
+    this.newsService.updateNews(this.idNews, news)
+      .subscribe(
+        res => console.log('succces ', res),
+        err => console.log(err),
+        () => this.router.navigate(['/news'])
+      );
   }
-
 }

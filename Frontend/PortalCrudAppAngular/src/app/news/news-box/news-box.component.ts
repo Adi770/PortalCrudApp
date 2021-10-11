@@ -20,25 +20,34 @@ export class NewsBoxComponent implements OnInit {
   baseUrl: string;
 
   ngOnInit(): void {
-    this.baseUrl=environment.baseAddress;
-    this.loadNews().subscribe(res => {
-      this.news = res;
-      console.log(res)
-    });
+    console.log('reload')
+    this.baseUrl = environment.baseAddress;
+    this.loadNews();
   }
   role = true;
 
-  loadNews(): Observable<Array<NewsResponseDTO>> {
-    console.log('load news')
-    return this.newsService.getSomeNews(0, 5);
+  loadNews() {
+    console.log('load news');
+    this.newsService.getSomeNews(0, 5).subscribe(res => {
+      this.news = res;
+      console.log(res)
+    },
+      err => console.log(err),
+      () => console.log('end request')
+    );
   }
 
   openDeleteDialog(idNews: string) {
     this.dialog.closeAll;
-    this.dialog.open(DeleteComponent, {
+    let dialogDelete = this.dialog.open(DeleteComponent, {
       width: '250px',
       data: { id: idNews }
     });
+    dialogDelete.afterClosed().subscribe(
+      res => {
+        this.ngOnInit()
+      }
+    )
 
   }
 
