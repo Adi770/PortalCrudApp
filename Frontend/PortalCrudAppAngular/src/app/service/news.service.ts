@@ -26,21 +26,14 @@ export class NewsService {
   }
 
   updateNews(id: number, newsDTO: NewsDTO) {
-    this.http.put(this.baseUrl + '/' + id, newsDTO).subscribe(res => {
-      console.log('update news ' + id)
-    })
+    return this.http.put(this.baseUrl + '/' + id, newsDTO)
   }
 
   deleteNews(id: number) {
-    this.http.delete(this.baseUrl + '/' + id).subscribe(res => {
-      console.log('delete news ' + id)
-    })
+    return this.http.delete(this.baseUrl + '/' + id)
   }
 
   createNews(news: Data) {
-    console.log(this.baseUrl + ' ++++++++++++ ' + news)
-    this.http.post(this.baseUrl, news).subscribe(res => {
-      console.log('poszedl')
-    })
+   return this.http.post(this.baseUrl, news)
   }
 }

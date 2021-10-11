@@ -4,6 +4,10 @@ import { NewsService } from './../../service/news.service';
 import { Component, OnInit } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Title } from '@angular/platform-browser';
+import { catchError } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -11,8 +15,10 @@ import { Title } from '@angular/platform-browser';
 })
 export class AddComponent implements OnInit {
 
-  constructor(private newsService: NewsService,
-    private formBuilder: FormBuilder) { }
+  constructor(
+    private newsService: NewsService,
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
   imageList: FileList;
   previewsImageList: string[];
@@ -34,6 +40,10 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.edtiorData = '';
+  }
+
+  loadEditData() {
+
   }
 
   onFileSelected(event: any) {
@@ -71,10 +81,13 @@ export class AddComponent implements OnInit {
 
     console.log(data.get('file'))
     data.append('news', JSON.stringify(news));
-    console.log(data.getAll)
-    this.newsService.createNews(data);
+    this.newsService.createNews(data)
+      .subscribe(
+        res => console.log('succces ', res),
+        err => console.log(err),
+        () => this.router.navigate(['/news'])
+      );
   }
-
   save() {
     console.log("test " + this.articleFormGroup.get(['title']).value)
     console.log(this.articleFormGroup.get(['article']).value)

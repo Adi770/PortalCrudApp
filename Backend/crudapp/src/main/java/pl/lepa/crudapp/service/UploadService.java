@@ -13,6 +13,7 @@ import java.util.UUID;
 public class UploadService {
 
     private static final String CRUDAPP_SRC_MAIN_RESOURCES_IMAGES = "crudapp/src/main/resources/images";
+    private static final String PATH_TO_RESOURCES_HANDLERS = "images";
 
     public String uploadLocalFile(MultipartFile file) {
 
@@ -28,12 +29,14 @@ public class UploadService {
         String extension = Files.getFileExtension(filename);
         String filenameWithoutExtension = Files.getNameWithoutExtension(filename);
 
-        File image = new File(CRUDAPP_SRC_MAIN_RESOURCES_IMAGES
-                + "/"
-                + filenameWithoutExtension
+        String newFilename = filenameWithoutExtension
                 + uuid
                 + "."
-                + extension);
+                + extension;
+
+        File image = new File(CRUDAPP_SRC_MAIN_RESOURCES_IMAGES
+                + "/"
+                + newFilename);
 
         try (OutputStream outputStream = new FileOutputStream(image);
              InputStream inputStream = file.getInputStream();
@@ -43,9 +46,9 @@ public class UploadService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        return image.getPath();
+        return PATH_TO_RESOURCES_HANDLERS + "\\" + newFilename;
 
-
-        return image.getPath();
     }
 
     public String uploadToCloud(MultipartFile file) {
