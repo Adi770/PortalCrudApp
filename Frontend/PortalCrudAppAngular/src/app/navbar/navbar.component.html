@@ -8,7 +8,7 @@
             <a class="navbar-brand" routerLink="#">CrudApp</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link"  routerLink="news">News</a>
+                    <a class="nav-link" routerLink="news">News</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="news/create">Create</a>
@@ -17,7 +17,7 @@
                     <a class="nav-link" (click)="openEditDialog()">Edit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" (click)="openDeleteDialog()">Delete</a>
+                    <a class="nav-link" (click)="openDeleteDialog()" routerLink="#">Delete</a>
                 </li>
             </ul>
             <form class="d-flex">
@@ -29,16 +29,17 @@
                     </li>
                 </ul>
                 <ng-template #notLogin>
+
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link login" (click)="openLoginDialog()">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                                 <img src="./assets/icon/login2.png" alt="loginIcon">
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link logout" (click)="openRegisterDialog()">
-                                <img src="./assets/icon/logout.png" alt="RegisterIcon">
-                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" (click)="openLoginDialog()">Logowanie</a></li>
+                                <li><a class="dropdown-item" (click)="openRegisterDialog()">Rejestracja</a></li>
+                            </div>
                         </li>
                     </ul>
                 </ng-template>

@@ -64,7 +64,11 @@ export class AddComponent implements OnInit {
               article: res.article
             })
           },
-          err => console.log(err),
+          err => {
+            console.log(err)
+            console.log('news doesn\'t exist')
+            this.router.navigate(['news/create'])
+          },
           () => ('load news ' + this.idNews)
         )
     } else if (this.currentPath === 'create') {

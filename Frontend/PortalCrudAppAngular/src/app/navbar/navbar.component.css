@@ -1,4 +1,4 @@
-.navbar-custom {
+.navbar-custom, .dropdown-menu {
     background: rgb(59, 59, 59);
 }
 
@@ -9,5 +9,12 @@ img {
 
 .logout{
     filter: invert(90%);
+}
+
+.dropdown-item{
+    color: white;
+}
+.dropdown-item:hover{
+    color: black;
 }
 
