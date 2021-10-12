@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { DeleteComponent } from './../news/delete/delete.component';
 import { EditComponent } from './../news/edit/edit.component';
 import { AccountService } from './../service/account.service';
 import { RegisterComponent } from './../account-management/register/register.component';
@@ -12,7 +14,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private accountService: AccountService) {
+  constructor(
+    public dialog: MatDialog,
+    private accountService: AccountService,
+    private router: Router) {
 
   }
 
@@ -40,7 +45,6 @@ export class NavbarComponent implements OnInit {
     this.dialog.closeAll;
     this.dialog.open(LoginComponent, {
       width: '250px',
-
     })
   }
 
@@ -54,6 +58,19 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.accountService.logout()
 
+  }
+
+  openDeleteDialog() {
+    this.dialog.closeAll;
+    let dialogDelete = this.dialog.open(DeleteComponent, {
+      width: '250px'
+    })
+    dialogDelete.afterClosed().subscribe(
+      res => {
+        console.log(this.router.url)
+        this.router.navigateByUrl('/news?d=0')
+      }
+    )
   }
 
 }

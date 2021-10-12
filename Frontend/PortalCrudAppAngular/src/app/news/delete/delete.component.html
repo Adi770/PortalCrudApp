@@ -1,8 +1,12 @@
 <div class="contianer">
-    <form (ngSubmit)="deleteNews()">
-        <div class="">
-            <label>Czy chcesz usunąć dany news?</label>
+    <form [formGroup]="deleteFormGroup" (ngSubmit)="deleteNews()">
+        <div class="" *ngIf="data === null; else nullBlock">
+            <label for="idNews">Podaj id news:</label>
+            <input class="form-control" id="idNews" formControlName="idNews">
         </div>
+        <ng-template #nullBlock class="">
+            <label>Czy chcesz usunąć news?</label>
+        </ng-template>
         <div class="buttons">
             <button class="btn btn-primary" mat-icon-button mat-dialog-close type="submit">Tak</button>
             <button class="btn btn-primary" mat-icon-button mat-dialog-close>Nie</button>
