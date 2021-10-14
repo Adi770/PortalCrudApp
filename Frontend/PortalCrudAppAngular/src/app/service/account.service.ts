@@ -1,4 +1,4 @@
-import { UsernameAndPassword } from './account.interface';
+import { UsernameAndPassword, RecoveryMessage } from './account.interface';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -13,16 +13,14 @@ export class AccountService {
   baseUrl = environment.baseAddress;
   basicApiUrl = environment.baseApiUrl;
   accountManagementUrl = this.basicApiUrl + '/AccountManagement';
-  defualtValue=null;
-
+  defualtValue = null;
 
   getToken(user: UsernameAndPassword) {
-    console.log('get user token')
-    sessionStorage.setItem('token',this.defualtValue)
-    return this.httpClient.post<any>(this.baseUrl+'/login', user, { observe: 'response' }).subscribe(
+    sessionStorage.setItem('token', this.defualtValue)
+    return this.httpClient.post<any>(this.baseUrl + '/login', user, { observe: 'response' }).subscribe(
       res => {
-        let token=res.headers.get('Authorization');
-        sessionStorage.setItem('token',token);
+        let token = res.headers.get('Authorization');
+        sessionStorage.setItem('token', token);
         this.currentRole();
       });
   }
@@ -32,13 +30,16 @@ export class AccountService {
     sessionStorage.removeItem('role');
   }
 
-
-
   currentRole() {
-    sessionStorage.setItem('role',this.defualtValue)
-    return this.httpClient.get<string>(this.accountManagementUrl+'/role').subscribe(res => {
-      console.log('current user role:'+ res);
-      sessionStorage.setItem('role',res);
+    sessionStorage.setItem('role', this.defualtValue)
+    return this.httpClient.get<string>(this.accountManagementUrl + '/role').subscribe(res => {
+      console.log('current user role:' + res);
+      sessionStorage.setItem('role', res);
     });
+  }
+
+  recorveryAccount(recoveryMessage: RecoveryMessage) {
+    return this.httpClient.post(this.accountManagementUrl + '/password', recoveryMessage)
+
   }
 }

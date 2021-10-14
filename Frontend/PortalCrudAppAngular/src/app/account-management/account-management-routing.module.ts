@@ -1,3 +1,4 @@
+import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';

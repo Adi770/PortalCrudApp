@@ -10,10 +10,11 @@ import { ModeratorComponent } from './moderator/moderator.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 
 
 @NgModule({
-  declarations: [AccountManagementComponent, UserComponent, AdminComponent, ModeratorComponent, LoginComponent, RegisterComponent],
+  declarations: [AccountManagementComponent, UserComponent, AdminComponent, ModeratorComponent, LoginComponent, RegisterComponent, ForgottenPasswordComponent],
   imports: [
     CommonModule,
     AccountManagementRoutingModule,

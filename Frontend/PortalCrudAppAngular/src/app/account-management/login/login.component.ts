@@ -1,8 +1,10 @@
+import { ForgottenPasswordComponent } from './../forgotten-password/forgotten-password.component';
+import { MatDialog } from '@angular/material/dialog';
 import { UsernameAndPassword } from './../../service/account.interface';
 import { AccountService } from './../../service/account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -34,17 +36,22 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.get(['username']).value,
       username: this.loginForm.get(['password']).value
     }
-    console.log(this.loginForm.value)
-    console.log(this.loginForm.get(['username']).value)
     this.accountService.getToken(user)
-}
+  }
 
-role() {
-  this.accountService.currentRole();
-}
+  role() {
+    this.accountService.currentRole();
+  }
 
-data() {
-  console.log(sessionStorage.getItem('token'))
-  console.log(sessionStorage.getItem('role'))
-}
+  data() {
+    console.log(sessionStorage.getItem('role'))
+  }
+
+  resetPassword() {
+
+    this.dialog.closeAll;
+    this.dialog.open(ForgottenPasswordComponent, {
+      width: '250px',
+    })
+  }
 }
