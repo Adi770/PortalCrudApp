@@ -10,6 +10,7 @@ import { ModeratorComponent } from './moderator/moderator.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 
 
@@ -20,9 +21,10 @@ import { ForgottenPasswordComponent } from './forgotten-password/forgotten-passw
     AccountManagementRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ],
-  exports:[
+  exports: [
     AccountManagementComponent
   ]
 })

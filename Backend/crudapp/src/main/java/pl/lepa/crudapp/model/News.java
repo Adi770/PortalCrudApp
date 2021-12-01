@@ -24,9 +24,8 @@ public class News {
     private String article;
 
 
-    @ManyToOne
-    @JoinColumn(name = "AUTHOR_FK")
-    private User author;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User articleAuthor;
 
     @Column(name = "CREATE_DATE")
     private LocalDateTime createDate;

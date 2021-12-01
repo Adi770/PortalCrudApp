@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class NewsService {
 
+
     private final UploadService uploadService;
     private final NewsRepository newsRepository;
     private final UserService userService;
@@ -72,7 +73,7 @@ public class NewsService {
 
         news.setTitle(newsDto.getTitle());
         news.setArticle(newsDto.getArticle());
-        news.setAuthor(userService.currentUser());
+        news.setArticleAuthor(userService.currentUser());
 
         news.setCreateDate(LocalDateTime.now());
         news.setLastEdit(LocalDateTime.now());
@@ -95,7 +96,7 @@ public class NewsService {
 
     public void editNews(long id, NewsDTO newsDto) {
         News news = newsRepository.findById(id).orElseThrow(NewsNotFound::new);
-        if (!userService.currentUser().getRole().equals(Role.ADMIN) || !userService.currentUser().getUsername().equals(news.getAuthor().getUsername())) {
+        if (!userService.currentUser().getRole().equals(Role.ADMIN) || !userService.currentUser().getUsername().equals(news.getArticleAuthor().getUsername())) {
             throw new InvalidUser("Access denied");
         }
         news.setTitle(newsDto.getTitle());
@@ -144,7 +145,7 @@ public class NewsService {
     }
 
     public List<CommentResponseDTO> commentList(long idNews, int page, int size) {
-        News news = newsRepository.findById(idNews).orElseThrow(NewsNotFound::new);
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "Id"));
         List<Comment> commentList = commentRepository.findAllByNews_Id(idNews, pageable).toList();
         List<CommentResponseDTO> commentResponseDTOList = commentList

@@ -21,6 +21,7 @@ export class AccountService {
       res => {
         let token = res.headers.get('Authorization');
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('username', user.username)
         this.currentRole();
       });
   }

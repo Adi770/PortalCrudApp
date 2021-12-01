@@ -9,6 +9,7 @@ import pl.lepa.crudapp.model.NewsRating;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -48,15 +49,14 @@ public class User implements Serializable {
     @Column(name="ENABLED")
     private boolean isEnabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<NewsRating> newsRating;
+    private List<NewsRating> newsRating;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Comment> commentSet;
+    private List<Comment> commentSet;
 
-    @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<News> newsSet;
+    @OneToMany(mappedBy = "articleAuthor",fetch = FetchType.LAZY)
+    private List<News> newsSet;
 }

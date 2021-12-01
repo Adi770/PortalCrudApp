@@ -18,7 +18,6 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "AUTHOR_FK")
     private User author;
 
     @Column(name = "COMMENT_TEXT")

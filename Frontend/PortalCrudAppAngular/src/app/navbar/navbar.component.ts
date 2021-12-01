@@ -21,11 +21,14 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  currentUserName: String;
+
   ngOnInit(): void {
   }
 
   userIsLogin(): boolean {
     let token = sessionStorage.getItem('token');
+    this.currentUserName= sessionStorage.getItem('username');
     if (token != 'null' && token != null) {
       return true;
     } else {

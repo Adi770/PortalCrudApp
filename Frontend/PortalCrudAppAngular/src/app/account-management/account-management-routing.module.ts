@@ -1,3 +1,4 @@
+import { UserComponent } from './user/user.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -11,7 +12,7 @@ const routes: Routes = [
   { path: '', component: AccountManagementComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'moderator', component: AdminComponent },
-  { path: 'user', component: AdminComponent },
+  { path: 'panel/user', component: UserComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 ];

@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
     this.dialog.closeAll;
     this.dialog.open(ForgottenPasswordComponent, {
-      width: '250px',
+      width: '25rem',
     })
   }
 }

@@ -22,6 +22,16 @@
             </ul>
             <form class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="userIsLogin(); else notLogin">
+                    <li class="nav-item ">
+                        <a class="nav-link" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                            <img src="./assets/icon/login2.png" alt="userIcon">
+                            {{currentUserName}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" routerLink="panel/user">Zarządzaj</a></li>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link logout" (click)="logout()">
                             <img src="./assets/icon/logout.png" alt="logoutIcon">
@@ -29,7 +39,6 @@
                     </li>
                 </ul>
                 <ng-template #notLogin>
-
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link " id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"

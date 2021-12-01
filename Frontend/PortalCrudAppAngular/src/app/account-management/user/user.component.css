@@ -1,0 +1,13 @@
+::ng-deep .mat-tab-list .mat-tab-label-active {
+    color: white;
+    background: rgb(70, 70, 70);
+}
+
+::ng-deep .mat-tab-group {
+    color: white;
+    background: rgb(59, 59, 59);
+}
+
+::ng-deep .mat-tab-label {
+    color: rgb(226, 226, 226);
+}
