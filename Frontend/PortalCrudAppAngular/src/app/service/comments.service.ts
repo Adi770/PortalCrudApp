@@ -15,15 +15,22 @@ export class CommentsService {
   baseUrl = environment.baseApiUrl;
   baseUrlComments = environment.baseApiUrl + '/comments'
 
-  getCommentById(id: number):Observable<CommentDTO> {
+  getCommentById(id: number): Observable<CommentDTO> {
     return this.http.get<CommentDTO>(this.baseUrlComments + '/' + id)
   }
 
-  getCommentByNewsId(idNews: number, size: number, page: number):Observable<Array<CommentDTO>> {
-    let params = new HttpParams();
-    params.append('page', page.toString());
-    params.append('size', size.toString());
-    return this.http.get<Array<CommentDTO>>(this.baseUrl + 'news/' + idNews + '/comments', { params: params })
+  getCommentByNewsId(idNews: number, size: number, page: number): Observable<Array<CommentDTO>> {
+    // let params = new HttpParams();
+    // params.append('page', page.toString());
+    // params.append('size', size.toString());
+    const paramsObj = {
+      page: page.toString() || undefined,
+      size: size.toString() || undefined
+    };
+    const params = new HttpParams({ fromObject: paramsObj });
+
+    
+    return this.http.get<Array<CommentDTO>>(this.baseUrl + 'news/' + idNews + '/comments', { params })
   }
 
   createComment(idNews: number, comment: CommentDTO) {

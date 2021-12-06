@@ -30,6 +30,7 @@ export class NewsBoxComponent implements OnInit {
     console.log('load news');
     this.newsService.getSomeNews(0, 5).subscribe(res => {
       this.news = res;
+      console.log("load NEws")
       console.log(res)
     },
       err => console.log(err),

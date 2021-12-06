@@ -4,6 +4,8 @@ package pl.lepa.crudapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import pl.lepa.crudapp.model.user.User;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ public class Comment {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private User author;
 
     @Column(name = "COMMENT_TEXT")
@@ -30,6 +33,7 @@ public class Comment {
     private LocalDateTime lastEdit;
 
     @ManyToOne
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     @JsonIgnore
     private News news;
 

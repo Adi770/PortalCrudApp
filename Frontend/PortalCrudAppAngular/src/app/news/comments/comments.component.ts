@@ -16,20 +16,19 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit(): void {
     let id = Number(this.activatedRoute.snapshot.url[0].path);
-    this.items = this.loadCommnet(1,0,10);
+    this.items = this.loadCommnet(id, 0, 10);
   }
 
   loadCommnet(id: number, page: number, size: number) {
-    console.log('nic kurwa nie ma'+this.commentsService.getCommentByNewsId(id, size, page).pipe(catchError(err => {
-      console.log('error with comments')
-      return throwError(err);
-    })))
-    console.log('second')
+    console.log("load comments")
+    
+    this.commentsService.getCommentByNewsId(id, size, page).subscribe(res => console.log(res))
+  
     return this.commentsService.getCommentByNewsId(id, size, page).pipe(catchError(err => {
       console.log('error with comments')
       return throwError(err);
     }));
-   
+
   }
 
 }

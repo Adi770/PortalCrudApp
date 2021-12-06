@@ -33,7 +33,7 @@ public class News {
     @Column(name = "LAST_EDIT")
     private LocalDateTime lastEdit;
 
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<Comment> commentSet;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -49,4 +49,5 @@ public class News {
     public void setNewsRatings(Set<NewsRating> newsRatings) {
         this.newsRatings = newsRatings;
     }
+
 }

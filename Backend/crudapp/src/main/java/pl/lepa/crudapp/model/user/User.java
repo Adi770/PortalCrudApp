@@ -58,5 +58,6 @@ public class User implements Serializable {
     private List<Comment> commentSet;
 
     @OneToMany(mappedBy = "articleAuthor",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<News> newsSet;
 }

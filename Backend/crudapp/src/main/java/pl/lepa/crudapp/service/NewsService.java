@@ -90,7 +90,7 @@ public class NewsService {
 
         log.info("Image Set");
         log.info(imageSet.toString());
-        news.setImageSet(imageSet);
+      //  news.setImageSet(imageSet);
         return newsRepository.save(news);
     }
 
@@ -113,6 +113,7 @@ public class NewsService {
     }
 
     public NewsResponseDTO getNews(long id) {
+        News news2=newsRepository.getById(id);
         News news = newsRepository.findById(id).orElseThrow(NewsNotFound::new);
         return modelMapper.map(news, NewsResponseDTO.class);
     }
