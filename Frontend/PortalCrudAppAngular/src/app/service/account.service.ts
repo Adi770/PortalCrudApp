@@ -29,6 +29,7 @@ export class AccountService {
   logout(): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('role');
+    sessionStorage.removeItem('username');
   }
 
   currentRole() {
@@ -42,5 +43,9 @@ export class AccountService {
   recorveryAccount(recoveryMessage: RecoveryMessage) {
     return this.httpClient.post(this.accountManagementUrl + '/password', recoveryMessage)
 
+  }
+
+  currentName(){
+    return sessionStorage.getItem('username')
   }
 }

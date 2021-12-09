@@ -18,11 +18,11 @@ export class NewsService {
     return this.http.get<NewsResponseDTO>(this.baseUrl + '/' + id);
   }
 
-  getSomeNews(page: number, size: number): Observable<Array<NewsResponseDTO>> {
+  getSomeNews(page: number, size: number): Observable<NewsResponseDTO[]> {
     let params = new HttpParams();
     params = params.append('page', page.toString());
     params = params.append('size', size.toString());
-    return this.http.get<Array<NewsResponseDTO>>(this.baseUrl, {params: params})
+    return this.http.get<NewsResponseDTO[]>(this.baseUrl, {params: params})
   }
 
   updateNews(id: number, newsDTO: NewsDTO) {

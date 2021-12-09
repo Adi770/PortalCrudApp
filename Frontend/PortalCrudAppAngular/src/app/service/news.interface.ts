@@ -45,6 +45,15 @@ interface Author {
   role: string;
 }
 
+
 export interface CommentDTO {
-    commentText: String
+  id: number;
+  author: Author;
+  commentText: string;
+  createDate: CreateDate;
+  lastEdit: CreateDate;
 }
+
+
+
+

@@ -19,22 +19,21 @@ export class CommentsService {
     return this.http.get<CommentDTO>(this.baseUrlComments + '/' + id)
   }
 
-  getCommentByNewsId(idNews: number, size: number, page: number): Observable<Array<CommentDTO>> {
-    // let params = new HttpParams();
-    // params.append('page', page.toString());
-    // params.append('size', size.toString());
-    const paramsObj = {
-      page: page.toString() || undefined,
-      size: size.toString() || undefined
-    };
-    const params = new HttpParams({ fromObject: paramsObj });
+  getCommentByNewsId(idNews: number, size: number, page: number): Observable<CommentDTO[]> {
+    // const paramsObj = {
+    //   page: page.toString() || undefined,
+    //   size: size.toString() || undefined
+    // };
+    // const params = new HttpParams({ fromObject: paramsObj });
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
 
-    
-    return this.http.get<Array<CommentDTO>>(this.baseUrl + 'news/' + idNews + '/comments', { params })
+    return this.http.get<CommentDTO[]>(this.baseUrl + '/news/' + idNews + '/comments', {params: params})
   }
 
   createComment(idNews: number, comment: CommentDTO) {
-    return this.http.post(this.baseUrl + 'news/' + idNews + '/comments', comment)
+    return this.http.post(this.baseUrl + '/news/' + idNews + '/comments', comment)
   }
 
   updateComment(id: number, comment: CommentDTO) {

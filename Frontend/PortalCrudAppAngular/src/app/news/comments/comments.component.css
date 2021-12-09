@@ -1,7 +1,20 @@
 .comment-user {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
 }
+
+.comment-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.deleteButton,.editButton {
+    margin-left: 10px;
+}
+
+
 
 .comment-author {
     font-weight: bolder;
@@ -15,8 +28,13 @@
     min-height: 40px;
 }
 
-.comment-list {
+.comment-list{
     margin-bottom: 10px;
+}
+
+.comment-date {
+    font-size: 0.875em;
+
 }
 
 .comment {
@@ -24,4 +42,18 @@
     margin: 1rem;
     border-radius: 10px;
     background: rgb(59, 59, 59);
+}
+
+.commentTextArea {
+    padding: 1em;
+    margin: 1rem;
+    border-radius: 10px;
+    background: rgb(59, 59, 59);
+}
+textarea{
+    color: white;
+    width: 100%;
+}
+.addButton{
+    margin-left: 10px;
 }

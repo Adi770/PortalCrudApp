@@ -1,3 +1,13 @@
+<div class="createComment row" *ngIf="currentUser()!=undefined">
+    <div class="col user_image">
+        <img src="./assets/icon/login2.png" alt="user_image" style="width: 100%; height: 100%;">
+    </div>
+    <div class="col-11">
+        <textarea class="commentTextArea"></textarea>
+        <button class="btn btn-primary addButton">Dodaj</button>
+    </div>
+   
+</div>
 <div class="comment-list row" *ngFor="let item of items">
     <div class="col user_image">
         <img src="./assets/icon/login2.png" alt="user_image" style="width: 100%; height: 100%;">
@@ -5,11 +15,16 @@
     <div class="col-11 ">
         <div class="comment">
             <div class="comment-user">
-                <div class="comment-author">author_name</div>
-                <div class="comment-date">date</div>
+                <div class="comment-author">{{item.author.username}}</div>
+                <div class="comment-date">{{item.createDate.dayOfMonth}} {{item.createDate.month}}
+                    {{item.createDate.year}}</div>
             </div>
             <div class="comment-text">
-                <div class="comment-text">text</div>
+                {{item.commentText}}
+            </div>
+            <div *ngIf="item.author.username==currentUser()" class="comment-button">
+                <div class="editButton">Edycja</div>
+                <div class="deleteButton">Usuń</div>
             </div>
         </div>
     </div>

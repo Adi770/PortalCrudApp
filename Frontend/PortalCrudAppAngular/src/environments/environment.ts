@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   baseUrl:'http://localhost:4200',
-  baseAddress:'http://localhost:8080/',
-  baseApiUrl:'http://localhost:8080/api/v1/'
+  baseAddress:'http://localhost:8080',
+  baseApiUrl:'http://localhost:8080/api/v1'
 };
 
 /*
