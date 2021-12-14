@@ -1,13 +1,13 @@
-<div class="createComment row" *ngIf="currentUser()!=undefined">
+<form class="createComment row" *ngIf="currentUser()!=undefined" (ngSubmit)="createComment()" [formGroup]="newCommentFormGroup">
     <div class="col user_image">
         <img src="./assets/icon/login2.png" alt="user_image" style="width: 100%; height: 100%;">
     </div>
     <div class="col-11">
-        <textarea class="commentTextArea"></textarea>
-        <button class="btn btn-primary addButton">Dodaj</button>
+        <textarea class="commentTextArea" formControlName='comment'></textarea>
+        <button class="btn btn-primary addButton" type="submit">Dodaj</button>
     </div>
-   
-</div>
+</form>
+
 <div class="comment-list row" *ngFor="let item of items">
     <div class="col user_image">
         <img src="./assets/icon/login2.png" alt="user_image" style="width: 100%; height: 100%;">

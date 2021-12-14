@@ -106,7 +106,6 @@ export class AddComponent implements OnInit {
   save() {
     console.log(this.articleFormGroup.get(['title']).value)
     console.log(this.articleFormGroup.get(['article']).value)
-    //let news: NewsDTO;
     const news: NewsDTO = {
       title: this.articleFormGroup.get(['title']).value,
       article: this.articleFormGroup.get(['article']).value

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CommentDTO } from './news.interface';
+import { CommentResponseDTO, CommentDTO } from './news.interface';
 import { environment } from './../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -15,11 +15,11 @@ export class CommentsService {
   baseUrl = environment.baseApiUrl;
   baseUrlComments = environment.baseApiUrl + '/comments'
 
-  getCommentById(id: number): Observable<CommentDTO> {
-    return this.http.get<CommentDTO>(this.baseUrlComments + '/' + id)
+  getCommentById(id: number): Observable<CommentResponseDTO> {
+    return this.http.get<CommentResponseDTO>(this.baseUrlComments + '/' + id)
   }
 
-  getCommentByNewsId(idNews: number, size: number, page: number): Observable<CommentDTO[]> {
+  getCommentByNewsId(idNews: number, size: number, page: number): Observable<CommentResponseDTO[]> {
     // const paramsObj = {
     //   page: page.toString() || undefined,
     //   size: size.toString() || undefined
@@ -29,7 +29,7 @@ export class CommentsService {
     params = params.append('page', page.toString());
     params = params.append('size', size.toString());
 
-    return this.http.get<CommentDTO[]>(this.baseUrl + '/news/' + idNews + '/comments', {params: params})
+    return this.http.get<CommentResponseDTO[]>(this.baseUrl + '/news/' + idNews + '/comments', {params: params})
   }
 
   createComment(idNews: number, comment: CommentDTO) {

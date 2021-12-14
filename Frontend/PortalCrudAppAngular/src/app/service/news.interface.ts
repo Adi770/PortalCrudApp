@@ -46,13 +46,19 @@ interface Author {
 }
 
 
-export interface CommentDTO {
+export interface CommentResponseDTO {
   id: number;
   author: Author;
   commentText: string;
   createDate: CreateDate;
   lastEdit: CreateDate;
 }
+
+
+export interface CommentDTO{
+  commentText: String
+}
+
 
 
 
